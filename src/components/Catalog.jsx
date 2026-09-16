@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, SlidersHorizontal, Package } from 'lucide-react';
-import { categories, products } from '../data/companyData';
+import { categories } from '../data/companyData';
+import { subscribePublicProducts } from '../services/productService';
 import ProductCard from './ProductCard';
 
 export default function Catalog({ onOpenModal }) {
+  const [productList, setProductList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  const filteredProducts = products.filter(product => {
+  // Subscribe to real-time public products from Firestore
+  useEffect(() => {
+    setLoading(true);
+    const unsubscribe = subscribePublicProducts((data) => {
+      // Filter out any hidden products just in case
+      const activeOnly = data.filter(p => p.ativo !== false);
+      setProductList(activeOnly);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const filteredProducts = productList.filter(product => {
     const matchesCategory =
       selectedCategory === 'todas' ||
       product.categoria === selectedCategory ||
       (product.categoriasSecundarias && product.categoriasSecundarias.includes(selectedCategory));
 
     const matchesSearch =
-      product.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.descricao.toLowerCase().includes(searchQuery.toLowerCase());
+      (product.nome && product.nome.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (product.descricao && product.descricao.toLowerCase().includes(searchQuery.toLowerCase()));
 
     return matchesCategory && matchesSearch;
   });
@@ -132,7 +147,11 @@ export default function Catalog({ onOpenModal }) {
         </div>
 
         {/* Catalog Product Grid */}
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray-dark)' }}>
+            Carregando catálogo de máquinas...
+          </div>
+        ) : filteredProducts.length > 0 ? (
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',

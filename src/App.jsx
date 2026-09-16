@@ -28,7 +28,7 @@ export default function App() {
   const [authChecking, setAuthChecking] = useState(true);
   const [selectedProductModal, setSelectedProductModal] = useState(null);
 
-  // Sync URL pathname changes
+  // Sync URL pathname for SPA routing
   useEffect(() => {
     const handlePopState = () => {
       setCurrentPath(window.location.pathname);
@@ -37,7 +37,7 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Listen to Firebase Authentication state
+  // Firebase Auth State Listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -59,7 +59,7 @@ export default function App() {
     setSelectedProductModal(null);
   };
 
-  // Determine if viewing Admin Routes (/admin or /admin/dashboard)
+  // Check if current URL is an admin route (/admin or /admin/dashboard)
   const isAdminRoute = currentPath.startsWith('/admin');
 
   if (isAdminRoute) {
@@ -91,12 +91,11 @@ export default function App() {
     return (
       <AdminLogin
         onLoginSuccess={() => navigateTo('/admin/dashboard')}
-        onGoHome={() => navigateTo('/')}
       />
     );
   }
 
-  // Render Public Website
+  // Render Public Website (Pristine & Untouched Design)
   return (
     <div className="app-root">
       <Header />
@@ -117,23 +116,6 @@ export default function App() {
       </main>
       <Footer />
       <WhatsAppFloat />
-
-      {/* Discrete Admin Link in Public Footer */}
-      <div style={{
-        backgroundColor: '#030811',
-        padding: '0.4rem 0',
-        textAlign: 'center',
-        fontSize: '0.725rem',
-        color: '#475569',
-        borderTop: '1px solid rgba(255,255,255,0.04)'
-      }}>
-        <button
-          onClick={() => navigateTo('/admin')}
-          style={{ color: '#64748B', textDecoration: 'underline', cursor: 'pointer', fontSize: '0.725rem' }}
-        >
-          Área Administrativa (Dulopes Admin)
-        </button>
-      </div>
 
       {/* Product Detail Modal */}
       {selectedProductModal && (

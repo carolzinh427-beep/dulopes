@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from '../../lib/firebase';
-import { Lock, User, ShieldCheck, ArrowRight, AlertCircle, CheckCircle2, Home } from 'lucide-react';
+import { User, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 
-export default function AdminLogin({ onLoginSuccess, onGoHome }) {
+export default function AdminLogin({ onLoginSuccess }) {
   const [username, setUsername] = useState('Dulopes');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('Dulopes26');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [infoMsg, setInfoMsg] = useState('');
@@ -30,7 +30,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
 
     if (!isFirebaseConfigured) {
       setLoading(false);
-      setErrorMsg('Variáveis de ambiente do Firebase não encontradas na Vercel / ambiente. Configure VITE_FIREBASE_API_KEY e VITE_FIREBASE_PROJECT_ID.');
+      setErrorMsg('Variáveis de ambiente do Firebase não encontradas.');
       return;
     }
 
@@ -44,9 +44,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
 
       if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
         setErrorMsg('Usuário ou senha incorretos.');
-        setInfoMsg(`Dica: Verifique se a conta ${emailToUse} foi criada no Firebase Console em Authentication -> Users com a senha informada.`);
-      } else if (err.code === 'auth/too-many-requests') {
-        setErrorMsg('Acesso temporariamente bloqueado por muitas tentativas. Tente novamente mais tarde.');
+        setInfoMsg(`Aviso: Caso seja o primeiro acesso no Firebase Console (dulopes-e846c), cadastre o e-mail "${emailToUse}" na aba Authentication -> Users com a senha desejada.`);
       } else {
         setErrorMsg(`Erro na autenticação: ${err.message}`);
       }
@@ -64,7 +62,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Background Graphic Accents */}
+      {/* Background Graphic Accent */}
       <div style={{
         position: 'absolute',
         top: '10%',
@@ -72,43 +70,23 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
         width: '400px',
         height: '400px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(255,107,0,0.12) 0%, rgba(10,25,47,0) 70%)',
+        background: 'radial-gradient(circle, rgba(255,107,0,0.15) 0%, rgba(10,25,47,0) 70%)',
         pointerEvents: 'none'
       }} />
 
-      {/* Main Login Card */}
+      {/* Main Login Box */}
       <div style={{
         backgroundColor: 'var(--navy-main)',
         borderRadius: 'var(--border-radius-lg)',
         border: '1px solid rgba(255, 107, 0, 0.3)',
         boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
         width: '100%',
-        maxWidth: '440px',
+        maxWidth: '420px',
         padding: '2.5rem',
         position: 'relative',
         zIndex: 2
       }}>
-        {/* Return to Public Site Button */}
-        <button
-          onClick={onGoHome}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            color: '#94A3B8',
-            fontSize: '0.825rem',
-            fontWeight: '600',
-            marginBottom: '1.5rem',
-            transition: 'color 0.2s'
-          }}
-          onMouseEnter={(e) => e.target.style.color = 'var(--orange-main)'}
-          onMouseLeave={(e) => e.target.style.color = '#94A3B8'}
-        >
-          <Home size={14} />
-          <span>Voltar ao site público</span>
-        </button>
-
-        {/* Header Logo Badge */}
+        {/* Logo Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{
             width: '56px',
@@ -127,15 +105,15 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             </span>
           </div>
 
-          <h1 style={{ color: 'var(--white)', fontSize: '1.5rem', fontWeight: '800', marginBottom: '0.35rem' }}>
-            Painel Administrativo
+          <h1 style={{ color: 'var(--white)', fontSize: '1.5rem', fontWeight: '800', marginBottom: '0.25rem' }}>
+            Dulopes
           </h1>
-          <p style={{ color: '#94A3B8', fontSize: '0.875rem' }}>
-            DULOPES MÁQUINAS E EQUIPAMENTOS | INOX
+          <p style={{ color: '#94A3B8', fontSize: '0.85rem' }}>
+            Painel Administrativo
           </p>
         </div>
 
-        {/* Error / Alert Banner */}
+        {/* Error Alert */}
         {errorMsg && (
           <div style={{
             backgroundColor: 'rgba(239, 68, 68, 0.15)',
@@ -154,7 +132,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
           </div>
         )}
 
-        {/* Informational Hint Banner */}
+        {/* Info Hint */}
         {infoMsg && (
           <div style={{
             backgroundColor: 'rgba(234, 179, 8, 0.15)',
@@ -162,7 +140,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             borderRadius: 'var(--border-radius-md)',
             padding: '0.85rem 1rem',
             color: '#FDE047',
-            fontSize: '0.825rem',
+            fontSize: '0.8rem',
             marginBottom: '1.25rem'
           }}>
             {infoMsg}
@@ -171,7 +149,6 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
 
         {/* Login Form */}
         <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {/* Username Field */}
           <div>
             <label style={{ display: 'block', color: '#E2E8F0', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.4rem' }}>
               Usuário
@@ -181,7 +158,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Ex: Dulopes"
+                placeholder="Usuário"
                 required
                 style={{
                   width: '100%',
@@ -199,7 +176,6 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             </div>
           </div>
 
-          {/* Password Field */}
           <div>
             <label style={{ display: 'block', color: '#E2E8F0', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.4rem' }}>
               Senha
@@ -209,7 +185,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Sua senha administrativa"
+                placeholder="Senha"
                 required
                 style={{
                   width: '100%',
@@ -227,7 +203,6 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -235,10 +210,10 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
             style={{ padding: '0.95rem', fontSize: '1rem', marginTop: '0.5rem' }}
           >
             {loading ? (
-              <span>Autenticando...</span>
+              <span>Entrando...</span>
             ) : (
               <>
-                <span>Acessar Painel</span>
+                <span>Entrar</span>
                 <ArrowRight size={18} />
               </>
             )}
@@ -246,7 +221,7 @@ export default function AdminLogin({ onLoginSuccess, onGoHome }) {
         </form>
 
         <div style={{ marginTop: '2rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'center', fontSize: '0.75rem', color: '#64748B' }}>
-          Autenticação Protegida por Firebase Auth
+          Dulopes Máquinas | Autenticação Segura
         </div>
       </div>
     </div>

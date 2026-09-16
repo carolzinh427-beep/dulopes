@@ -11,15 +11,14 @@ import {
   where,
   serverTimestamp
 } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage, isFirebaseConfigured } from '../lib/firebase';
 import { products as initialProducts } from '../data/companyData';
 
-// Firestore Primary Collection
 const COLLECTION_NAME = 'products';
 
 /**
- * Standardize Firestore Product Object for seamless component rendering
+ * Standardize Firestore Product Object
  */
 function formatProduct(docSnapshot) {
   const data = docSnapshot.data();
@@ -27,11 +26,12 @@ function formatProduct(docSnapshot) {
 
   const images = data.images || data.imagens || [];
   const mainImage = data.mainImage || (images.length > 0 ? images[0] : '/images/hero_equipment.jpg');
+  const status = data.status === 'inactive' || data.ativo === false ? 'inactive' : 'active';
 
   return {
     id,
     name: data.name || data.nome || '',
-    nome: data.name || data.nome || '', // Alias for backward compatibility
+    nome: data.name || data.nome || '',
     description: data.description || data.descricao || '',
     descricao: data.description || data.descricao || '',
     fullDescription: data.fullDescription || data.descricaoCompleta || data.description || data.descricao || '',
@@ -40,12 +40,12 @@ function formatProduct(docSnapshot) {
     categoria: data.category || data.categoria || 'maquinas',
     price: data.price !== undefined ? data.price : (data.preco !== undefined ? data.preco : null),
     preco: data.price !== undefined ? data.price : (data.preco !== undefined ? data.preco : null),
-    status: data.status || 'Pronta Entrega',
+    status, // "active" | "inactive"
     mainImage,
     images: images.length > 0 ? images : [mainImage],
     imagens: images.length > 0 ? images : [mainImage],
-    active: data.active !== undefined ? data.active : (data.ativo !== undefined ? data.ativo : true),
-    ativo: data.active !== undefined ? data.active : (data.ativo !== undefined ? data.ativo : true),
+    active: status === 'active',
+    ativo: status === 'active',
     highlight: Boolean(data.highlight || data.destaque),
     destaque: Boolean(data.highlight || data.destaque),
     specifications: data.specifications || data.especificacoes || {},
@@ -58,7 +58,7 @@ function formatProduct(docSnapshot) {
 }
 
 /**
- * Subscribe to Public Site Active Products (Firestore collection: 'products')
+ * Subscribe to Public Site Products (ONLY status === 'active')
  */
 export function subscribePublicProducts(callback) {
   if (!isFirebaseConfigured) {
@@ -70,6 +70,7 @@ export function subscribePublicProducts(callback) {
       price: p.preco,
       mainImage: p.imagens[0],
       images: p.imagens,
+      status: 'active',
       active: true
     })));
     return () => {};
@@ -78,7 +79,7 @@ export function subscribePublicProducts(callback) {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
-      where('active', '!=', false)
+      where('status', '==', 'active')
     );
 
     return onSnapshot(q, (snapshot) => {
@@ -91,6 +92,7 @@ export function subscribePublicProducts(callback) {
           price: p.preco,
           mainImage: p.imagens[0],
           images: p.imagens,
+          status: 'active',
           active: true
         })));
       } else {
@@ -108,18 +110,19 @@ export function subscribePublicProducts(callback) {
         price: p.preco,
         mainImage: p.imagens[0],
         images: p.imagens,
+        status: 'active',
         active: true
       })));
     });
   } catch (err) {
-    console.warn("Firestore subscription error:", err);
+    console.warn("Firestore public error:", err);
     callback(initialProducts);
     return () => {};
   }
 }
 
 /**
- * Subscribe to Admin Dashboard Products (all active & hidden in 'products')
+ * Subscribe to Admin Dashboard Products (both active & inactive)
  */
 export function subscribeAllProductsAdmin(callback) {
   if (!isFirebaseConfigured) {
@@ -131,7 +134,8 @@ export function subscribeAllProductsAdmin(callback) {
       price: p.preco,
       mainImage: p.imagens[0],
       images: p.imagens,
-      active: p.ativo !== false
+      status: 'active',
+      active: true
     })));
     return () => {};
   }
@@ -148,7 +152,8 @@ export function subscribeAllProductsAdmin(callback) {
           price: p.preco,
           mainImage: p.imagens[0],
           images: p.imagens,
-          active: p.ativo !== false
+          status: 'active',
+          active: true
         })));
       } else {
         const productList = snapshot.docs.map(formatProduct);
@@ -156,7 +161,7 @@ export function subscribeAllProductsAdmin(callback) {
         callback(productList);
       }
     }, (error) => {
-      console.error("Admin Firestore subscription error:", error);
+      console.error("Admin Firestore listener error:", error);
       callback(initialProducts);
     });
   } catch (err) {
@@ -167,7 +172,7 @@ export function subscribeAllProductsAdmin(callback) {
 }
 
 /**
- * Save / Create / Edit Product in Firestore 'products'
+ * Create or Update Product in Firestore 'products'
  */
 export async function saveProduct(productData) {
   if (!isFirebaseConfigured) {
@@ -176,6 +181,8 @@ export async function saveProduct(productData) {
 
   const imagesList = productData.images || productData.imagens || [];
   const mainImg = productData.mainImage || (imagesList.length > 0 ? imagesList[0] : '/images/hero_equipment.jpg');
+  const isInactive = productData.status === 'inactive' || productData.active === false || productData.ativo === false;
+  const finalStatus = isInactive ? 'inactive' : 'active';
 
   const payload = {
     name: productData.name || productData.nome || '',
@@ -188,12 +195,12 @@ export async function saveProduct(productData) {
     categoria: productData.category || productData.categoria || 'maquinas',
     price: productData.price !== undefined ? productData.price : (productData.preco !== undefined ? productData.preco : null),
     preco: productData.price !== undefined ? productData.price : (productData.preco !== undefined ? productData.preco : null),
-    status: productData.status || 'Pronta Entrega',
+    status: finalStatus,
+    active: finalStatus === 'active',
+    ativo: finalStatus === 'active',
     mainImage: mainImg,
     images: imagesList,
     imagens: imagesList,
-    active: productData.active !== undefined ? productData.active : (productData.ativo !== false),
-    ativo: productData.active !== undefined ? productData.active : (productData.ativo !== false),
     highlight: Boolean(productData.highlight || productData.destaque),
     destaque: Boolean(productData.highlight || productData.destaque),
     specifications: productData.specifications || productData.especificacoes || {},
@@ -217,22 +224,23 @@ export async function saveProduct(productData) {
 }
 
 /**
- * Toggle product active / hidden state
+ * Toggle product status: 'active' <-> 'inactive'
  */
-export async function toggleProductActiveStatus(id, currentActiveState) {
+export async function toggleProductStatus(id, currentStatus) {
   if (!isFirebaseConfigured) return;
   const docRef = doc(db, COLLECTION_NAME, id);
-  const nextState = !currentActiveState;
+  const nextStatus = currentStatus === 'active' ? 'inactive' : 'active';
   await updateDoc(docRef, {
-    active: nextState,
-    ativo: nextState,
+    status: nextStatus,
+    active: nextStatus === 'active',
+    ativo: nextStatus === 'active',
     updatedAt: serverTimestamp(),
     atualizadoEm: serverTimestamp()
   });
 }
 
 /**
- * Delete product document from Firestore 'products'
+ * Delete product document
  */
 export async function deleteProduct(id) {
   if (!isFirebaseConfigured) return;
@@ -241,11 +249,11 @@ export async function deleteProduct(id) {
 }
 
 /**
- * Upload Image to Firebase Storage bucket: dulopes-e846c.firebasestorage.app
+ * Upload Image to Firebase Storage under 'products/'
  */
 export async function uploadProductImage(file, onProgress) {
   if (!isFirebaseConfigured) {
-    throw new Error("Firebase Storage não está configurado.");
+    throw new Error("Firebase Storage não configurado.");
   }
 
   const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
@@ -262,7 +270,7 @@ export async function uploadProductImage(file, onProgress) {
         if (onProgress) onProgress(Math.round(progress));
       },
       (error) => {
-        console.error("Firebase Storage Upload Error:", error);
+        console.error("Storage upload error:", error);
         reject(error);
       },
       async () => {
@@ -274,7 +282,7 @@ export async function uploadProductImage(file, onProgress) {
 }
 
 /**
- * Seed initial equipment into Firestore 'products' collection
+ * Seed initial sample products to Firestore
  */
 export async function seedInitialProductsToFirestore() {
   if (!isFirebaseConfigured) {
@@ -296,12 +304,12 @@ export async function seedInitialProductsToFirestore() {
       categoria: item.categoria,
       price: item.preco || null,
       preco: item.preco || null,
-      status: item.status || 'Pronta Entrega',
+      status: 'active',
+      active: true,
+      ativo: true,
       mainImage: mainImg,
       images: item.imagens || [mainImg],
       imagens: item.imagens || [mainImg],
-      active: true,
-      ativo: true,
       highlight: Boolean(item.destaque),
       destaque: Boolean(item.destaque),
       specifications: item.especificacoes || {},

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Upload, Trash2, Star, Check, Plus, AlertCircle, Image as ImageIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Upload, Trash2, Star, Plus, AlertCircle } from 'lucide-react';
 import { uploadProductImage, saveProduct } from '../../services/productService';
 import { categories } from '../../data/companyData';
 
@@ -8,21 +8,21 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
 
   const [formData, setFormData] = useState({
     id: product?.id || null,
-    nome: product?.nome || '',
-    categoria: product?.categoria || 'maquinas',
-    descricao: product?.descricao || '',
-    descricaoCompleta: product?.descricaoCompleta || '',
-    imagens: product?.imagens ? [...product.imagens] : [],
-    preco: product?.preco || '',
-    status: product?.status || 'Pronta Entrega',
-    ativo: product?.ativo !== false,
-    destaque: product?.destaque || false,
-    ordem: product?.ordem || 1,
-    especificacoes: product?.especificacoes ? { ...product.especificacoes } : {
+    name: product?.name || product?.nome || '',
+    category: product?.category || product?.categoria || 'maquinas',
+    description: product?.description || product?.descricao || '',
+    fullDescription: product?.fullDescription || product?.descricaoCompleta || '',
+    images: product?.images ? [...product.images] : (product?.imagens ? [...product.imagens] : []),
+    mainImage: product?.mainImage || (product?.images && product.images[0]) || '',
+    price: product?.price !== undefined ? product.price : (product?.preco !== undefined ? product.preco : ''),
+    status: product?.status === 'inactive' || product?.active === false ? 'inactive' : 'active',
+    highlight: Boolean(product?.highlight || product?.destaque),
+    order: product?.order || product?.ordem || 1,
+    specifications: product?.specifications ? { ...product.specifications } : (product?.especificacoes ? { ...product.especificacoes } : {
       "Material": "Aço Inox AISI 304 Sanitário",
       "Tensão": "220V / 60Hz",
       "Aplicação": "Indústria e alimentos"
-    }
+    })
   });
 
   const [uploading, setUploading] = useState(false);
@@ -30,7 +30,6 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Specs editor temporary state
   const [newSpecKey, setNewSpecKey] = useState('');
   const [newSpecVal, setNewSpecVal] = useState('');
 
@@ -53,31 +52,43 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
         });
         uploadedUrls.push(url);
       }
-      setFormData(prev => ({
-        ...prev,
-        imagens: [...prev.imagens, ...uploadedUrls]
-      }));
+      setFormData(prev => {
+        const newImages = [...prev.images, ...uploadedUrls];
+        const newMain = prev.mainImage || newImages[0];
+        return {
+          ...prev,
+          images: newImages,
+          mainImage: newMain
+        };
+      });
       setUploading(false);
     } catch (err) {
       console.error("Upload error:", err);
       setUploading(false);
-      setErrorMsg("Erro no upload da imagem para o Firebase Storage. " + err.message);
+      setErrorMsg("Erro no upload de imagem para o Firebase Storage: " + err.message);
     }
   };
 
   const removeImage = (indexToRemove) => {
-    setFormData(prev => ({
-      ...prev,
-      imagens: prev.imagens.filter((_, idx) => idx !== indexToRemove)
-    }));
+    setFormData(prev => {
+      const newImgs = prev.images.filter((_, idx) => idx !== indexToRemove);
+      const newMain = newImgs.length > 0 ? (prev.mainImage === prev.images[indexToRemove] ? newImgs[0] : prev.mainImage) : '';
+      return {
+        ...prev,
+        images: newImgs,
+        mainImage: newMain
+      };
+    });
   };
 
-  const setAsMainImage = (indexToMakeMain) => {
+  const setAsMainImage = (urlToMakeMain) => {
     setFormData(prev => {
-      const imgs = [...prev.imagens];
-      const [selected] = imgs.splice(indexToMakeMain, 1);
-      imgs.unshift(selected);
-      return { ...prev, imagens: imgs };
+      const remaining = prev.images.filter(u => u !== urlToMakeMain);
+      return {
+        ...prev,
+        images: [urlToMakeMain, ...remaining],
+        mainImage: urlToMakeMain
+      };
     });
   };
 
@@ -85,8 +96,8 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
     if (!newSpecKey.trim() || !newSpecVal.trim()) return;
     setFormData(prev => ({
       ...prev,
-      especificacoes: {
-        ...prev.especificacoes,
+      specifications: {
+        ...prev.specifications,
         [newSpecKey.trim()]: newSpecVal.trim()
       }
     }));
@@ -96,9 +107,9 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
 
   const removeSpec = (keyToRemove) => {
     setFormData(prev => {
-      const copy = { ...prev.especificacoes };
+      const copy = { ...prev.specifications };
       delete copy[keyToRemove];
-      return { ...prev, especificacoes: copy };
+      return { ...prev, specifications: copy };
     });
   };
 
@@ -106,12 +117,12 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
     e.preventDefault();
     setErrorMsg('');
 
-    if (!formData.nome.trim()) {
+    if (!formData.name.trim()) {
       setErrorMsg("O nome do produto é obrigatório.");
       return;
     }
 
-    if (!formData.imagens.length) {
+    if (!formData.images.length) {
       setErrorMsg("Adicione ao menos uma imagem ao produto.");
       return;
     }
@@ -125,7 +136,7 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
     } catch (err) {
       console.error("Save product error:", err);
       setSaving(false);
-      setErrorMsg("Erro ao salvar produto no Firestore: " + err.message);
+      setErrorMsg("Erro ao salvar produto no Firestore 'products': " + err.message);
     }
   };
 
@@ -160,10 +171,10 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid var(--gray-light)' }}>
           <div>
             <h2 style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--navy-darker)' }}>
-              {isEditing ? 'Editar Equipamento' : 'Adicionar Novo Equipamento'}
+              {isEditing ? 'Editar Produto' : 'Adicionar Novo Produto'}
             </h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--gray-dark)' }}>
-              Preencha os detalhes e faça o upload das imagens para o catálogo.
+              Salvando no Firestore `products` e imagens no Firebase Storage.
             </p>
           </div>
           <button
@@ -206,12 +217,12 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }} className="form-row">
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-                Nome do Equipamento *
+                Nome do Produto (name) *
               </label>
               <input
                 type="text"
-                value={formData.nome}
-                onChange={(e) => handleInputChange('nome', e.target.value)}
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
                 placeholder="Ex: Envasadora Pneumática em Inox"
                 required
                 style={{
@@ -219,26 +230,24 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
                   padding: '0.75rem',
                   borderRadius: 'var(--border-radius-md)',
                   border: '1px solid var(--gray-light)',
-                  fontSize: '0.9rem',
-                  fontFamily: 'inherit'
+                  fontSize: '0.9rem'
                 }}
               />
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-                Categoria *
+                Categoria (category) *
               </label>
               <select
-                value={formData.categoria}
-                onChange={(e) => handleInputChange('categoria', e.target.value)}
+                value={formData.category}
+                onChange={(e) => handleInputChange('category', e.target.value)}
                 style={{
                   width: '100%',
                   padding: '0.75rem',
                   borderRadius: 'var(--border-radius-md)',
                   border: '1px solid var(--gray-light)',
                   fontSize: '0.9rem',
-                  fontFamily: 'inherit',
                   backgroundColor: 'var(--white)'
                 }}
               >
@@ -249,11 +258,30 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
             </div>
           </div>
 
-          {/* Row 2: Status, Price & Active Toggle */}
+          {/* Row 2: Status, Price & Visibilidade */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }} className="form-row">
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-                Status de Disponibilidade
+                Preço (price)
+              </label>
+              <input
+                type="text"
+                value={formData.price || ''}
+                onChange={(e) => handleInputChange('price', e.target.value)}
+                placeholder="Ex: 4500 ou deixe vazio"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  borderRadius: 'var(--border-radius-md)',
+                  border: '1px solid var(--gray-light)',
+                  fontSize: '0.9rem'
+                }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
+                Status Público
               </label>
               <select
                 value={formData.status}
@@ -263,105 +291,81 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
                   padding: '0.75rem',
                   borderRadius: 'var(--border-radius-md)',
                   border: '1px solid var(--gray-light)',
-                  fontSize: '0.9rem',
-                  fontFamily: 'inherit'
+                  fontSize: '0.9rem'
                 }}
               >
-                <option value="Pronta Entrega">Pronta Entrega</option>
-                <option value="Sob Encomenda">Sob Encomenda</option>
+                <option value="active">Active (Visível no site)</option>
+                <option value="inactive">Inactive (Oculto do site)</option>
               </select>
             </div>
 
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-                Preço (Deixe vazio para "Consulte")
-              </label>
-              <input
-                type="text"
-                value={formData.preco || ''}
-                onChange={(e) => handleInputChange('preco', e.target.value)}
-                placeholder="Ex: 4500 ou vazio"
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  borderRadius: 'var(--border-radius-md)',
-                  border: '1px solid var(--gray-light)',
-                  fontSize: '0.9rem',
-                  fontFamily: 'inherit'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-                Visibilidade no Site
+                Destaque
               </label>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', paddingTop: '0.5rem' }}>
                 <input
                   type="checkbox"
-                  id="ativoCheckbox"
-                  checked={formData.ativo}
-                  onChange={(e) => handleInputChange('ativo', e.target.checked)}
+                  id="highlightCheckbox"
+                  checked={formData.highlight}
+                  onChange={(e) => handleInputChange('highlight', e.target.checked)}
                   style={{ width: '18px', height: '18px', accentColor: 'var(--orange-main)' }}
                 />
-                <label htmlFor="ativoCheckbox" style={{ fontSize: '0.875rem', fontWeight: '700', cursor: 'pointer' }}>
-                  {formData.ativo ? 'Ativo (Visível)' : 'Oculto'}
+                <label htmlFor="highlightCheckbox" style={{ fontSize: '0.875rem', fontWeight: '700', cursor: 'pointer' }}>
+                  Marcar como Destaque
                 </label>
               </div>
             </div>
           </div>
 
-          {/* Row 3: Descriptions */}
+          {/* Descriptions */}
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-              Descrição Resumida (Para o Card)
+              Descrição Resumida (description)
             </label>
             <input
               type="text"
-              value={formData.descricao}
-              onChange={(e) => handleInputChange('descricao', e.target.value)}
-              placeholder="Resumo curto de 1 a 2 linhas..."
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              placeholder="Resumo de 1 a 2 linhas..."
               style={{
                 width: '100%',
                 padding: '0.75rem',
                 borderRadius: 'var(--border-radius-md)',
                 border: '1px solid var(--gray-light)',
-                fontSize: '0.9rem',
-                fontFamily: 'inherit'
+                fontSize: '0.9rem'
               }}
             />
           </div>
 
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-              Descrição Completa (Para o Modale)
+              Descrição Completa (fullDescription)
             </label>
             <textarea
               rows={3}
-              value={formData.descricaoCompleta}
-              onChange={(e) => handleInputChange('descricaoCompleta', e.target.value)}
-              placeholder="Detalhamento completo das características e aplicação do equipamento..."
+              value={formData.fullDescription}
+              onChange={(e) => handleInputChange('fullDescription', e.target.value)}
+              placeholder="Descrição completa para a página/modale do produto..."
               style={{
                 width: '100%',
                 padding: '0.75rem',
                 borderRadius: 'var(--border-radius-md)',
                 border: '1px solid var(--gray-light)',
-                fontSize: '0.9rem',
-                fontFamily: 'inherit'
+                fontSize: '0.9rem'
               }}
             />
           </div>
 
-          {/* Image Upload Area */}
+          {/* Firebase Storage Image Upload */}
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-              Imagens do Equipamento (Firebase Storage) *
+              Imagens do Produto (Firebase Storage) *
             </label>
             <p style={{ fontSize: '0.785rem', color: 'var(--gray-dark)', marginBottom: '0.75rem' }}>
-              A primeira imagem será a imagem principal do card. Clique na estrela ⭐ para definir como principal.
+              A imagem marcada com ⭐ será salva em <code style={{ color: 'var(--orange-main)' }}>mainImage</code> no Firestore.
             </p>
 
-            {/* Upload Box */}
             <div style={{
               border: '2px dashed var(--gray-mid)',
               borderRadius: 'var(--border-radius-md)',
@@ -390,97 +394,95 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
               />
               <Upload size={28} color="var(--orange-main)" style={{ marginBottom: '0.5rem' }} />
               <div style={{ fontWeight: '700', fontSize: '0.9rem', color: 'var(--navy-darker)' }}>
-                {uploading ? `Enviando para Firebase Storage (${uploadProgress}%)...` : 'Clique ou arraste imagens aqui para fazer upload'}
-              </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--gray-dark)', marginTop: '0.2rem' }}>
-                Suporta JPG, PNG, WEBP
+                {uploading ? `Enviando foto (${uploadProgress}%)...` : 'Fazer Upload de Imagens no Firebase Storage'}
               </div>
             </div>
 
-            {/* Uploaded Images Preview Grid */}
-            {formData.imagens.length > 0 && (
+            {/* Images Grid */}
+            {formData.images.length > 0 && (
               <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                {formData.imagens.map((imgUrl, idx) => (
-                  <div key={idx} style={{
-                    position: 'relative',
-                    width: '90px',
-                    height: '90px',
-                    borderRadius: 'var(--border-radius-sm)',
-                    overflow: 'hidden',
-                    border: idx === 0 ? '3px solid var(--orange-main)' : '1px solid var(--gray-light)',
-                    boxShadow: 'var(--shadow-sm)'
-                  }}>
-                    <img src={imgUrl} alt={`Foto ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-
-                    {/* Main Image Badge */}
-                    {idx === 0 && (
-                      <span style={{
-                        position: 'absolute',
-                        top: 2,
-                        left: 2,
-                        backgroundColor: 'var(--orange-main)',
-                        color: 'white',
-                        fontSize: '0.65rem',
-                        fontWeight: '800',
-                        padding: '1px 4px',
-                        borderRadius: '2px'
-                      }}>
-                        Principal
-                      </span>
-                    )}
-
-                    {/* Actions overlay */}
-                    <div style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      width: '100%',
-                      backgroundColor: 'rgba(0,0,0,0.7)',
-                      display: 'flex',
-                      justifyContent: 'space-around',
-                      padding: '2px'
+                {formData.images.map((imgUrl, idx) => {
+                  const isMain = imgUrl === formData.mainImage || idx === 0;
+                  return (
+                    <div key={idx} style={{
+                      position: 'relative',
+                      width: '90px',
+                      height: '90px',
+                      borderRadius: 'var(--border-radius-sm)',
+                      overflow: 'hidden',
+                      border: isMain ? '3px solid var(--orange-main)' : '1px solid var(--gray-light)',
+                      boxShadow: 'var(--shadow-sm)'
                     }}>
-                      {idx !== 0 && (
+                      <img src={imgUrl} alt={`Preview ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+
+                      {isMain && (
+                        <span style={{
+                          position: 'absolute',
+                          top: 2,
+                          left: 2,
+                          backgroundColor: 'var(--orange-main)',
+                          color: 'white',
+                          fontSize: '0.65rem',
+                          fontWeight: '800',
+                          padding: '1px 4px',
+                          borderRadius: '2px'
+                        }}>
+                          Principal
+                        </span>
+                      )}
+
+                      <div style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        width: '100%',
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        padding: '2px'
+                      }}>
+                        {!isMain && (
+                          <button
+                            type="button"
+                            onClick={() => setAsMainImage(imgUrl)}
+                            title="Definir como mainImage"
+                            style={{ color: '#FDE047' }}
+                          >
+                            <Star size={14} />
+                          </button>
+                        )}
                         <button
                           type="button"
-                          onClick={() => setAsMainImage(idx)}
-                          title="Definir como Principal"
-                          style={{ color: '#FDE047' }}
+                          onClick={() => removeImage(idx)}
+                          title="Remover"
+                          style={{ color: '#EF4444' }}
                         >
-                          <Star size={14} />
+                          <Trash2 size={14} />
                         </button>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => removeImage(idx)}
-                        title="Remover Imagem"
-                        style={{ color: '#EF4444' }}
-                      >
-                        <Trash2 size={14} />
-                      </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
 
-          {/* Technical Specs Editor */}
+          {/* Specifications Editor */}
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', marginBottom: '0.35rem', color: 'var(--navy-darker)' }}>
-              Especificações Técnicas
+              Especificações Técnicas (specifications)
             </label>
             <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
               <input
                 type="text"
-                placeholder="Ex: Tensão"
+                placeholder="Item (ex: Material)"
                 value={newSpecKey}
                 onChange={(e) => setNewSpecKey(e.target.value)}
                 style={{ flex: 1, padding: '0.6rem', fontSize: '0.85rem', borderRadius: 'var(--border-radius-sm)', border: '1px solid var(--gray-light)' }}
               />
               <input
                 type="text"
-                placeholder="Ex: 220V Single-phase"
+                placeholder="Valor (ex: Aço Inox AISI 304)"
                 value={newSpecVal}
                 onChange={(e) => setNewSpecVal(e.target.value)}
                 style={{ flex: 1, padding: '0.6rem', fontSize: '0.85rem', borderRadius: 'var(--border-radius-sm)', border: '1px solid var(--gray-light)' }}
@@ -495,9 +497,8 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
               </button>
             </div>
 
-            {/* List of Current Specs */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {Object.entries(formData.especificacoes).map(([key, val]) => (
+              {Object.entries(formData.specifications).map(([key, val]) => (
                 <div key={key} style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -517,7 +518,7 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
             </div>
           </div>
 
-          {/* Submit Actions */}
+          {/* Modal Actions */}
           <div style={{
             display: 'flex',
             justifyContent: 'flex-end',
@@ -538,7 +539,7 @@ export default function ProductFormModal({ product, onClose, onSaveSuccess }) {
               disabled={saving || uploading}
               className="btn btn-orange"
             >
-              {saving ? 'Salvando no Firestore...' : 'Salvar Equipamento'}
+              {saving ? 'Gravando no Firestore...' : 'Salvar Produto'}
             </button>
           </div>
 

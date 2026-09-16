@@ -1,0 +1,20 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Regras para imagens de produtos
+    match /products/{allPaths=**} {
+      // Público pode visualizar imagens dos produtos
+      allow read: if true;
+
+      // Somente administrador autenticado pode fazer upload e deletar imagens
+      allow write, delete: if request.auth != null;
+    }
+
+    // Regra padrão fallback
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if request.auth != null;
+    }
+  }
+}

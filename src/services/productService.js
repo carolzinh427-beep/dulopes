@@ -9,59 +9,130 @@ import {
   onSnapshot,
   query,
   where,
-  orderBy,
   serverTimestamp
 } from 'firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage, isFirebaseConfigured } from '../lib/firebase';
 import { products as initialProducts } from '../data/companyData';
 
-const COLLECTION_NAME = 'produtos';
+// Firestore Primary Collection
+const COLLECTION_NAME = 'products';
 
 /**
- * Real-time subscription for Public Site (only active products)
+ * Standardize Firestore Product Object for seamless component rendering
+ */
+function formatProduct(docSnapshot) {
+  const data = docSnapshot.data();
+  const id = docSnapshot.id;
+
+  const images = data.images || data.imagens || [];
+  const mainImage = data.mainImage || (images.length > 0 ? images[0] : '/images/hero_equipment.jpg');
+
+  return {
+    id,
+    name: data.name || data.nome || '',
+    nome: data.name || data.nome || '', // Alias for backward compatibility
+    description: data.description || data.descricao || '',
+    descricao: data.description || data.descricao || '',
+    fullDescription: data.fullDescription || data.descricaoCompleta || data.description || data.descricao || '',
+    descricaoCompleta: data.fullDescription || data.descricaoCompleta || data.description || data.descricao || '',
+    category: data.category || data.categoria || 'maquinas',
+    categoria: data.category || data.categoria || 'maquinas',
+    price: data.price !== undefined ? data.price : (data.preco !== undefined ? data.preco : null),
+    preco: data.price !== undefined ? data.price : (data.preco !== undefined ? data.preco : null),
+    status: data.status || 'Pronta Entrega',
+    mainImage,
+    images: images.length > 0 ? images : [mainImage],
+    imagens: images.length > 0 ? images : [mainImage],
+    active: data.active !== undefined ? data.active : (data.ativo !== undefined ? data.ativo : true),
+    ativo: data.active !== undefined ? data.active : (data.ativo !== undefined ? data.ativo : true),
+    highlight: Boolean(data.highlight || data.destaque),
+    destaque: Boolean(data.highlight || data.destaque),
+    specifications: data.specifications || data.especificacoes || {},
+    especificacoes: data.specifications || data.especificacoes || {},
+    order: data.order || data.ordem || 1,
+    ordem: data.order || data.ordem || 1,
+    createdAt: data.createdAt || data.criadoEm || null,
+    updatedAt: data.updatedAt || data.atualizadoEm || null
+  };
+}
+
+/**
+ * Subscribe to Public Site Active Products (Firestore collection: 'products')
  */
 export function subscribePublicProducts(callback) {
   if (!isFirebaseConfigured) {
-    callback(initialProducts);
+    callback(initialProducts.map(p => ({
+      ...p,
+      name: p.nome,
+      description: p.descricao,
+      category: p.categoria,
+      price: p.preco,
+      mainImage: p.imagens[0],
+      images: p.imagens,
+      active: true
+    })));
     return () => {};
   }
 
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
-      where('ativo', '!=', false)
+      where('active', '!=', false)
     );
 
     return onSnapshot(q, (snapshot) => {
       if (snapshot.empty) {
-        callback(initialProducts);
+        callback(initialProducts.map(p => ({
+          ...p,
+          name: p.nome,
+          description: p.descricao,
+          category: p.categoria,
+          price: p.preco,
+          mainImage: p.imagens[0],
+          images: p.imagens,
+          active: true
+        })));
       } else {
-        const productList = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        // Sort by ordem if available
-        productList.sort((a, b) => (a.ordem || 99) - (b.ordem || 99));
+        const productList = snapshot.docs.map(formatProduct);
+        productList.sort((a, b) => (a.order || 99) - (b.order || 99));
         callback(productList);
       }
     }, (error) => {
-      console.warn("Firestore listener fallback to initial products:", error);
-      callback(initialProducts);
+      console.warn("Firestore public listener fallback:", error);
+      callback(initialProducts.map(p => ({
+        ...p,
+        name: p.nome,
+        description: p.descricao,
+        category: p.categoria,
+        price: p.preco,
+        mainImage: p.imagens[0],
+        images: p.imagens,
+        active: true
+      })));
     });
   } catch (err) {
-    console.warn("Firestore error fallback:", err);
+    console.warn("Firestore subscription error:", err);
     callback(initialProducts);
     return () => {};
   }
 }
 
 /**
- * Real-time subscription for Admin Dashboard (all products: active and hidden)
+ * Subscribe to Admin Dashboard Products (all active & hidden in 'products')
  */
 export function subscribeAllProductsAdmin(callback) {
   if (!isFirebaseConfigured) {
-    callback(initialProducts.map(p => ({ ...p, ativo: p.ativo !== false })));
+    callback(initialProducts.map(p => ({
+      ...p,
+      name: p.nome,
+      description: p.descricao,
+      category: p.categoria,
+      price: p.preco,
+      mainImage: p.imagens[0],
+      images: p.imagens,
+      active: p.ativo !== false
+    })));
     return () => {};
   }
 
@@ -69,17 +140,23 @@ export function subscribeAllProductsAdmin(callback) {
     const colRef = collection(db, COLLECTION_NAME);
     return onSnapshot(colRef, (snapshot) => {
       if (snapshot.empty) {
-        callback(initialProducts.map(p => ({ ...p, ativo: p.ativo !== false })));
+        callback(initialProducts.map(p => ({
+          ...p,
+          name: p.nome,
+          description: p.descricao,
+          category: p.categoria,
+          price: p.preco,
+          mainImage: p.imagens[0],
+          images: p.imagens,
+          active: p.ativo !== false
+        })));
       } else {
-        const productList = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        productList.sort((a, b) => (a.ordem || 99) - (b.ordem || 99));
+        const productList = snapshot.docs.map(formatProduct);
+        productList.sort((a, b) => (a.order || 99) - (b.order || 99));
         callback(productList);
       }
     }, (error) => {
-      console.error("Admin Firestore listener error:", error);
+      console.error("Admin Firestore subscription error:", error);
       callback(initialProducts);
     });
   } catch (err) {
@@ -90,26 +167,40 @@ export function subscribeAllProductsAdmin(callback) {
 }
 
 /**
- * Add or Update a Product
+ * Save / Create / Edit Product in Firestore 'products'
  */
 export async function saveProduct(productData) {
   if (!isFirebaseConfigured) {
-    throw new Error("Firebase não está configurado. Adicione as variáveis de ambiente na Vercel.");
+    throw new Error("Firebase não está configurado.");
   }
 
+  const imagesList = productData.images || productData.imagens || [];
+  const mainImg = productData.mainImage || (imagesList.length > 0 ? imagesList[0] : '/images/hero_equipment.jpg');
+
   const payload = {
-    nome: productData.nome || '',
-    categoria: productData.categoria || 'maquinas',
-    categoriasSecundarias: productData.categoriasSecundarias || [],
-    descricao: productData.descricao || '',
-    descricaoCompleta: productData.descricaoCompleta || '',
-    imagens: productData.imagens || [],
-    preco: productData.preco || null,
+    name: productData.name || productData.nome || '',
+    nome: productData.name || productData.nome || '',
+    description: productData.description || productData.descricao || '',
+    descricao: productData.description || productData.descricao || '',
+    fullDescription: productData.fullDescription || productData.descricaoCompleta || '',
+    descricaoCompleta: productData.fullDescription || productData.descricaoCompleta || '',
+    category: productData.category || productData.categoria || 'maquinas',
+    categoria: productData.category || productData.categoria || 'maquinas',
+    price: productData.price !== undefined ? productData.price : (productData.preco !== undefined ? productData.preco : null),
+    preco: productData.price !== undefined ? productData.price : (productData.preco !== undefined ? productData.preco : null),
     status: productData.status || 'Pronta Entrega',
-    ativo: productData.ativo !== false,
-    destaque: Boolean(productData.destaque),
-    especificacoes: productData.especificacoes || {},
-    ordem: Number(productData.ordem) || 1,
+    mainImage: mainImg,
+    images: imagesList,
+    imagens: imagesList,
+    active: productData.active !== undefined ? productData.active : (productData.ativo !== false),
+    ativo: productData.active !== undefined ? productData.active : (productData.ativo !== false),
+    highlight: Boolean(productData.highlight || productData.destaque),
+    destaque: Boolean(productData.highlight || productData.destaque),
+    specifications: productData.specifications || productData.especificacoes || {},
+    especificacoes: productData.specifications || productData.especificacoes || {},
+    order: Number(productData.order || productData.ordem) || 1,
+    ordem: Number(productData.order || productData.ordem) || 1,
+    updatedAt: serverTimestamp(),
     atualizadoEm: serverTimestamp()
   };
 
@@ -118,6 +209,7 @@ export async function saveProduct(productData) {
     await updateDoc(docRef, payload);
     return productData.id;
   } else {
+    payload.createdAt = serverTimestamp();
     payload.criadoEm = serverTimestamp();
     const docRef = await addDoc(collection(db, COLLECTION_NAME), payload);
     return docRef.id;
@@ -125,19 +217,22 @@ export async function saveProduct(productData) {
 }
 
 /**
- * Toggle active/hidden status of a product
+ * Toggle product active / hidden state
  */
-export async function toggleProductActiveStatus(id, currentAtivoState) {
+export async function toggleProductActiveStatus(id, currentActiveState) {
   if (!isFirebaseConfigured) return;
   const docRef = doc(db, COLLECTION_NAME, id);
+  const nextState = !currentActiveState;
   await updateDoc(docRef, {
-    ativo: !currentAtivoState,
+    active: nextState,
+    ativo: nextState,
+    updatedAt: serverTimestamp(),
     atualizadoEm: serverTimestamp()
   });
 }
 
 /**
- * Delete a product document
+ * Delete product document from Firestore 'products'
  */
 export async function deleteProduct(id) {
   if (!isFirebaseConfigured) return;
@@ -146,15 +241,15 @@ export async function deleteProduct(id) {
 }
 
 /**
- * Upload Image to Firebase Storage
+ * Upload Image to Firebase Storage bucket: dulopes-e846c.firebasestorage.app
  */
 export async function uploadProductImage(file, onProgress) {
   if (!isFirebaseConfigured) {
-    throw new Error("Firebase Storage não configurado. Verifique as variáveis de ambiente.");
+    throw new Error("Firebase Storage não está configurado.");
   }
 
-  const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-  const storagePath = `produtos_imagens/${Date.now()}_${cleanFileName}`;
+  const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const storagePath = `products/${Date.now()}_${sanitizedFileName}`;
   const imageRef = ref(storage, storagePath);
 
   const uploadTask = uploadBytesResumable(imageRef, file);
@@ -167,7 +262,7 @@ export async function uploadProductImage(file, onProgress) {
         if (onProgress) onProgress(Math.round(progress));
       },
       (error) => {
-        console.error("Erro no upload de imagem:", error);
+        console.error("Firebase Storage Upload Error:", error);
         reject(error);
       },
       async () => {
@@ -179,7 +274,7 @@ export async function uploadProductImage(file, onProgress) {
 }
 
 /**
- * Seed initial sample products to Firestore
+ * Seed initial equipment into Firestore 'products' collection
  */
 export async function seedInitialProductsToFirestore() {
   if (!isFirebaseConfigured) {
@@ -188,10 +283,34 @@ export async function seedInitialProductsToFirestore() {
 
   for (const item of initialProducts) {
     const docRef = doc(db, COLLECTION_NAME, item.id);
+    const mainImg = item.imagens && item.imagens.length > 0 ? item.imagens[0] : '/images/hero_equipment.jpg';
+
     await setDoc(docRef, {
-      ...item,
+      name: item.nome,
+      nome: item.nome,
+      description: item.descricao,
+      descricao: item.descricao,
+      fullDescription: item.descricaoCompleta || item.descricao,
+      descricaoCompleta: item.descricaoCompleta || item.descricao,
+      category: item.categoria,
+      categoria: item.categoria,
+      price: item.preco || null,
+      preco: item.preco || null,
+      status: item.status || 'Pronta Entrega',
+      mainImage: mainImg,
+      images: item.imagens || [mainImg],
+      imagens: item.imagens || [mainImg],
+      active: true,
       ativo: true,
+      highlight: Boolean(item.destaque),
+      destaque: Boolean(item.destaque),
+      specifications: item.especificacoes || {},
+      especificacoes: item.especificacoes || {},
+      order: item.ordem || 1,
+      ordem: item.ordem || 1,
+      createdAt: serverTimestamp(),
       criadoEm: serverTimestamp(),
+      updatedAt: serverTimestamp(),
       atualizadoEm: serverTimestamp()
     }, { merge: true });
   }

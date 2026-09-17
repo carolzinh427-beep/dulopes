@@ -2,6 +2,7 @@ import React from 'react';
 import { Phone, Instagram, MapPin, Globe, Mail, ChevronRight } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import DulopesLogo from './DulopesLogo';
+import MagnetLines from './MagnetLines';
 
 export default function Footer() {
   const links = [
@@ -18,9 +19,32 @@ export default function Footer() {
       color: '#94A3B8',
       paddingTop: '4rem',
       paddingBottom: '2rem',
-      borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+      borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
-      <div className="container">
+      {/* Interactive MagnetLines Background Pattern */}
+      <div style={{
+        position: 'absolute',
+        right: '-30px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        opacity: 0.22,
+        pointerEvents: 'none',
+        zIndex: 1
+      }}>
+        <MagnetLines
+          rows={7}
+          columns={7}
+          containerSize="360px"
+          lineColor="var(--orange-main)"
+          lineWidth="3px"
+          lineHeight="28px"
+          baseAngle={-15}
+        />
+      </div>
+
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',

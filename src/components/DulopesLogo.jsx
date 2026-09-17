@@ -20,6 +20,11 @@ export default function DulopesLogo({
     ? '/images/dulopes_logo_white.png'
     : '/images/dulopes_logo_official.png';
 
+  // Deep shadow behind letters for realistic 3D depth and projection
+  const logoFilter = variant === 'light'
+    ? 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6))'
+    : 'drop-shadow(0 6px 16px rgba(0, 0, 0, 0.45)) drop-shadow(0 2px 5px rgba(11, 37, 69, 0.4))';
+
   return (
     <div
       className={`dulopes-logo-container ${className}`}
@@ -37,9 +42,7 @@ export default function DulopesLogo({
           height: `${h}px`,
           width: 'auto',
           objectFit: 'contain',
-          filter: variant === 'light'
-            ? 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))'
-            : 'drop-shadow(0 4px 10px rgba(11,37,69,0.25))',
+          filter: logoFilter,
           transition: 'transform 0.2s ease'
         }}
       />

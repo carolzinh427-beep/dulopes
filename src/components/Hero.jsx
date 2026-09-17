@@ -42,16 +42,10 @@ export default function Hero() {
 
           <div style={{ maxWidth: '840px', width: '100%' }}>
 
-            {/* Logo on Brushed Metal Background - Exactly as photo */}
+            {/* Logo on Brushed Metal Background - Clean without background box */}
             <div style={{
               marginBottom: '2.5rem',
-              display: 'inline-block',
-              padding: '1.5rem 2.5rem',
-              borderRadius: 'var(--border-radius-lg)',
-              backgroundColor: 'rgba(255, 255, 255, 0.4)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.6)',
-              boxShadow: '0 12px 30px rgba(11, 37, 69, 0.15)'
+              display: 'inline-block'
             }}>
               <DulopesLogo variant="dark" size="xlarge" showSubtitle={true} />
             </div>

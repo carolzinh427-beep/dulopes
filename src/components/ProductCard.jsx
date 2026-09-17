@@ -168,33 +168,44 @@ export default function ProductCard({ product, onOpenModal }) {
           </div>
 
           {/* Two CTAs: Details and WhatsApp */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }} className="p-card-actions">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.35rem' }} className="p-card-actions">
             <button
               onClick={() => onOpenModal(product)}
               className="btn btn-outline-navy p-card-btn-details"
-              style={{ padding: '0.65rem 0.5rem', fontSize: '0.825rem', width: '100%', justifyContent: 'center' }}
+              style={{
+                padding: '0.6rem 0.35rem',
+                fontSize: '0.76rem',
+                width: '100%',
+                justifyContent: 'center',
+                gap: '0.25rem',
+                minWidth: 0,
+                boxSizing: 'border-box'
+              }}
             >
-              <Eye size={15} />
-              <span>Ver detalhes</span>
+              <Eye size={14} style={{ flexShrink: 0 }} />
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Ver detalhes</span>
             </button>
 
             <button
               onClick={handleWhatsAppInterest}
               className="btn p-card-btn-interest"
               style={{
-                padding: '0.65rem 0.5rem',
-                fontSize: '0.825rem',
+                padding: '0.6rem 0.35rem',
+                fontSize: '0.76rem',
                 backgroundColor: '#050E1A',
                 color: '#FFFFFF',
                 border: '1px solid #1E293B',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '0.35rem'
+                gap: '0.25rem',
+                width: '100%',
+                minWidth: 0,
+                boxSizing: 'border-box'
               }}
             >
-              <MessageCircle size={15} color="var(--whatsapp-green)" />
-              <span>Tenho interesse</span>
+              <MessageCircle size={14} color="var(--whatsapp-green)" style={{ flexShrink: 0 }} />
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Tenho interesse</span>
             </button>
           </div>
         </div>

@@ -118,7 +118,7 @@ export default function Catalog({ onOpenModal }) {
             )}
           </div>
 
-          {/* Categories Pill Bar - Mobile Scrollable */}
+          {/* Categories Pill Bar - Desktop View */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -157,9 +157,55 @@ export default function Catalog({ onOpenModal }) {
               );
             })}
           </div>
+
+          {/* Single Filter Button for Mobile */}
+          <div className="mobile-filter-dropdown" style={{
+            justifyContent: 'center',
+            marginTop: '0.5rem'
+          }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
+              <select
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setShowAll(false);
+                }}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 2.25rem 0.75rem 1rem',
+                  fontSize: '0.875rem',
+                  fontWeight: '700',
+                  borderRadius: 'var(--border-radius-md)',
+                  border: '2px solid var(--orange-main)',
+                  backgroundColor: 'var(--navy-dark)',
+                  color: 'var(--white)',
+                  appearance: 'none',
+                  outline: 'none',
+                  cursor: 'pointer',
+                  textAlign: 'center'
+                }}
+              >
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id} style={{ backgroundColor: 'var(--navy-dark)', color: 'var(--white)' }}>
+                    Filtro: {cat.label}
+                  </option>
+                ))}
+              </select>
+              <div style={{
+                position: 'absolute',
+                right: '1rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                pointerEvents: 'none',
+                color: 'var(--orange-main)'
+              }}>
+                <SlidersHorizontal size={16} />
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Catalog Product Grid - Smaller Card Dimensions */}
+        {/* Catalog Product Grid - Smaller Card Dimensions & 3 per row on Mobile */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray-dark)' }}>
             Carregando catálogo de máquinas...
@@ -170,7 +216,7 @@ export default function Catalog({ onOpenModal }) {
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
               gap: '1.25rem'
-            }}>
+            }} className="catalog-products-grid">
               {displayedProducts.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -224,6 +270,26 @@ export default function Catalog({ onOpenModal }) {
       <style>{`
         .category-scroll-bar::-webkit-scrollbar {
           display: none;
+        }
+        @media (max-width: 640px) {
+          #catalogo {
+            padding: 2rem 0 !important;
+          }
+          .category-scroll-bar {
+            display: none !important;
+          }
+          .mobile-filter-dropdown {
+            display: flex !important;
+          }
+          .catalog-products-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 0.35rem !important;
+          }
+        }
+        @media (min-width: 641px) {
+          .mobile-filter-dropdown {
+            display: none !important;
+          }
         }
       `}</style>
     </section>

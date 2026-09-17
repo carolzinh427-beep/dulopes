@@ -55,7 +55,7 @@ export default function ProductCard({ product, onOpenModal }) {
             aspectRatio: '4/3',
             backgroundColor: '#0F172A',
             overflow: 'hidden'
-          }}>
+          }} className="p-card-img-box">
             <img
               src={product.imagens[0]}
               alt={product.nome}
@@ -75,7 +75,7 @@ export default function ProductCard({ product, onOpenModal }) {
               top: '0.75rem',
               left: '0.75rem',
               zIndex: 4
-            }}>
+            }} className="p-card-badge-box">
               <span className={`badge ${isProntaEntrega ? 'badge-status' : 'badge-status-encomenda'}`}>
                 <CheckCircle2 size={12} />
                 {product.status}
@@ -88,7 +88,7 @@ export default function ProductCard({ product, onOpenModal }) {
               top: '0.75rem',
               right: '0.75rem',
               zIndex: 4
-            }}>
+            }} className="p-card-tag-box">
               <span className="badge" style={{ backgroundColor: 'rgba(10, 25, 47, 0.85)', color: 'var(--white)', backdropFilter: 'blur(4px)' }}>
                 INOX 304
               </span>
@@ -103,7 +103,7 @@ export default function ProductCard({ product, onOpenModal }) {
         flexDirection: 'column',
         flex: 1,
         justifyContent: 'space-between'
-      }}>
+      }} className="p-card-body">
         <div>
           {/* Category Tag */}
           <div style={{
@@ -113,7 +113,7 @@ export default function ProductCard({ product, onOpenModal }) {
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
             marginBottom: '0.35rem'
-          }}>
+          }} className="p-card-cat">
             {product.categoria === 'maquinas' ? 'Máquinas Industriais' :
              product.categoria === 'inox' ? 'Equipamentos em Inox' :
              product.categoria === 'industria' ? 'Automação & Indústria' :
@@ -128,7 +128,7 @@ export default function ProductCard({ product, onOpenModal }) {
             color: 'var(--navy-darker)',
             marginBottom: '0.5rem',
             lineHeight: '1.3'
-          }}>
+          }} className="p-card-title">
             {product.nome}
           </h3>
 
@@ -142,19 +142,19 @@ export default function ProductCard({ product, onOpenModal }) {
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden'
-          }}>
+          }} className="p-card-desc">
             {product.descricao}
           </p>
         </div>
 
         {/* Price & Action Buttons */}
-        <div style={{ paddingTop: '0.85rem', borderTop: '1px solid var(--gray-light)' }}>
+        <div style={{ paddingTop: '0.85rem', borderTop: '1px solid var(--gray-light)' }} className="p-card-footer">
           <div style={{
             display: 'flex',
             alignItems: 'baseline',
             justifyContent: 'space-between',
             marginBottom: '1rem'
-          }}>
+          }} className="p-card-price-row">
             <span style={{ fontSize: '0.775rem', color: 'var(--gray-dark)', fontWeight: '600' }}>
               Condições:
             </span>
@@ -168,7 +168,7 @@ export default function ProductCard({ product, onOpenModal }) {
           </div>
 
           {/* Two CTAs: Details and WhatsApp */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }} className="p-card-actions">
             <button
               onClick={() => onOpenModal(product)}
               className="btn btn-outline-navy"
@@ -190,6 +190,64 @@ export default function ProductCard({ product, onOpenModal }) {
         </div>
       </div>
     </div>
+
+    <style>{`
+      @media (max-width: 640px) {
+        .p-card-body {
+          padding: 0.45rem !important;
+        }
+        .p-card-img-box {
+          aspect-ratio: 4/3 !important;
+        }
+        .p-card-badge-box, .p-card-tag-box {
+          top: 0.25rem !important;
+          left: 0.25rem !important;
+          right: 0.25rem !important;
+        }
+        .p-card-badge-box .badge, .p-card-tag-box .badge {
+          font-size: 0.55rem !important;
+          padding: 2px 4px !important;
+        }
+        .p-card-cat {
+          font-size: 0.6rem !important;
+          margin-bottom: 0.15rem !important;
+        }
+        .p-card-title {
+          font-size: 0.725rem !important;
+          margin-bottom: 0.25rem !important;
+          line-height: 1.15 !important;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .p-card-desc {
+          display: none !important;
+        }
+        .p-card-footer {
+          padding-top: 0.35rem !important;
+        }
+        .p-card-price-row {
+          margin-bottom: 0.35rem !important;
+          flex-direction: column !important;
+          gap: 0.1rem !important;
+        }
+        .p-card-price-row span {
+          font-size: 0.65rem !important;
+        }
+        .p-card-actions {
+          grid-template-columns: 1fr !important;
+          gap: 0.25rem !important;
+        }
+        .p-card-actions button {
+          padding: 0.35rem 0.2rem !important;
+          font-size: 0.625rem !important;
+        }
+        .p-card-actions button span {
+          font-size: 0.6rem !important;
+        }
+      }
+    `}</style>
     </AnimatedContent>
   );
 }

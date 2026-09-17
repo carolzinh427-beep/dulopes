@@ -146,25 +146,37 @@ export default function Offers() {
       <style>{`
         @media (max-width: 640px) {
           #ofertas {
-            padding: 2.5rem 0 !important;
+            padding: 1.5rem 0 !important;
           }
           .offers-grid {
-            grid-template-columns: 1fr !important;
-            gap: 1.25rem !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.5rem !important;
           }
           .offer-img-box {
-            height: 200px !important;
+            height: 105px !important;
           }
           .offer-body {
-            padding: 1rem !important;
+            padding: 0.5rem !important;
           }
           .offer-title {
-            font-size: 1rem !important;
+            font-size: 0.75rem !important;
+            margin-bottom: 0.25rem !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
           }
           .offer-desc {
-            font-size: 0.825rem !important;
-            margin-bottom: 1rem !important;
-            -webkit-line-clamp: 3 !important;
+            display: none !important;
+          }
+          .offer-body .btn {
+            padding: 0.35rem 0.4rem !important;
+            font-size: 0.65rem !important;
+            gap: 0.25rem !important;
+          }
+          .offer-body .btn svg {
+            width: 12px !important;
+            height: 12px !important;
           }
         }
       `}</style>

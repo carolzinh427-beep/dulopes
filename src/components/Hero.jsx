@@ -49,7 +49,7 @@ export default function Hero() {
             <div style={{
               marginBottom: '2.5rem',
               display: 'inline-block'
-            }}>
+            }} className="hero-logo-box">
               <DulopesLogo variant="dark" size="xlarge" showSubtitle={true} />
             </div>
 
@@ -107,7 +107,7 @@ export default function Hero() {
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '3rem'
-            }}>
+            }} className="hero-btns">
               <SpecularButton
                 size="md"
                 radius={12}
@@ -162,7 +162,7 @@ export default function Hero() {
               color: '#334155',
               fontSize: '0.925rem',
               fontWeight: '700'
-            }}>
+            }} className="hero-badges">
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <ShieldCheck size={18} color="var(--orange-main)" />
                 <span>Aço Inox AISI 304</span>
@@ -183,6 +183,40 @@ export default function Hero() {
 
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          #inicio {
+            padding-top: 1.5rem !important;
+            padding-bottom: 1.5rem !important;
+          }
+          #inicio .hero-logo-box {
+            margin-bottom: 1rem !important;
+          }
+          #inicio h1 {
+            font-size: 1.35rem !important;
+            margin-bottom: 0.65rem !important;
+          }
+          #inicio .split-parent {
+            font-size: 0.825rem !important;
+            margin-bottom: 1rem !important;
+            line-height: 1.4 !important;
+          }
+          #inicio .hero-btns {
+            gap: 0.5rem !important;
+            margin-bottom: 1rem !important;
+          }
+          #inicio .hero-btns .specular-button {
+            padding: 8px 14px !important;
+            font-size: 0.8rem !important;
+          }
+          #inicio .hero-badges {
+            gap: 0.5rem 1rem !important;
+            padding-top: 0.85rem !important;
+            font-size: 0.75rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

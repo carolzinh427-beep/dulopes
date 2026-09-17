@@ -5,7 +5,7 @@ import SplitText from './SplitText';
 
 export default function NationalCoverage() {
   return (
-    <section style={{
+    <section id="atendemos-brasil" style={{
       padding: '4.5rem 0',
       backgroundColor: 'var(--navy-dark)',
       color: 'var(--white)',
@@ -64,7 +64,7 @@ export default function NationalCoverage() {
               borderRadius: 'var(--border-radius-md)',
               padding: '1.5rem',
               marginBottom: '2rem'
-            }}>
+            }} className="coverage-card">
               <div style={{ display: 'flex', itemsAlign: 'flex-start', gap: '1rem', marginBottom: '1rem' }}>
                 <div style={{
                   width: '42px',
@@ -116,7 +116,7 @@ export default function NationalCoverage() {
               href={`https://wa.me/${companyConfig.whatsappFormatted}?text=${encodeURIComponent('Olá! Gostaria de consultar prazos de entrega e frete para o meu estado.')}`}
               target="_blank"
               rel="noreferrer"
-              className="btn btn-orange"
+              className="btn btn-orange coverage-btn"
               style={{ padding: '0.9rem 1.6rem' }}
             >
               <Navigation size={18} />
@@ -132,7 +132,7 @@ export default function NationalCoverage() {
             border: '1px solid rgba(255, 107, 0, 0.25)',
             padding: '2rem',
             textAlign: 'center'
-          }}>
+          }} className="map-card">
             {/* Visual Route Hub */}
             <div style={{
               width: '100%',
@@ -142,7 +142,7 @@ export default function NationalCoverage() {
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative'
-            }}>
+            }} className="hub-box">
               {/* Center Hub: Cariacica ES */}
               <div style={{
                 position: 'relative',
@@ -152,7 +152,7 @@ export default function NationalCoverage() {
                 borderRadius: 'var(--border-radius-md)',
                 padding: '1.25rem 2rem',
                 boxShadow: '0 0 30px rgba(255, 107, 0, 0.3)'
-              }}>
+              }} className="hub-center">
                 <div style={{ color: 'var(--orange-main)', fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.1em' }}>
                   ORIGEM DAS EXPEDIÇÕES
                 </div>
@@ -171,7 +171,7 @@ export default function NationalCoverage() {
                 gap: '1rem',
                 width: '100%',
                 marginTop: '2rem'
-              }}>
+              }} className="regions-grid">
                 {['Região Sudeste', 'Região Sul', 'Região Nordeste', 'Região Centro-Oeste', 'Região Norte', 'Exportação/Todo BR'].map((region, idx) => (
                   <div key={idx} style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.04)',
@@ -185,7 +185,7 @@ export default function NationalCoverage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '0.35rem'
-                  }}>
+                  }} className="region-chip">
                     <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--orange-main)' }} />
                     <span>{region}</span>
                   </div>
@@ -201,6 +201,53 @@ export default function NationalCoverage() {
         @media (min-width: 900px) {
           .coverage-grid {
             grid-template-columns: 1.1fr 0.9fr !important;
+          }
+        }
+        @media (max-width: 640px) {
+          #atendemos-brasil {
+            padding: 1.5rem 0 !important;
+          }
+          .coverage-grid {
+            gap: 1rem !important;
+          }
+          .coverage-grid h2 {
+            font-size: 1.15rem !important;
+            margin-bottom: 0.4rem !important;
+          }
+          .coverage-grid .split-parent {
+            font-size: 0.8rem !important;
+            margin-bottom: 0.85rem !important;
+            line-height: 1.4 !important;
+          }
+          .coverage-card {
+            padding: 0.75rem !important;
+            margin-bottom: 0.85rem !important;
+          }
+          .coverage-btn {
+            padding: 0.55rem 0.85rem !important;
+            font-size: 0.75rem !important;
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          .map-card {
+            padding: 0.85rem !important;
+          }
+          .hub-box {
+            min-height: auto !important;
+          }
+          .hub-center {
+            padding: 0.6rem 0.85rem !important;
+          }
+          .hub-center > div:nth-child(2) {
+            font-size: 1rem !important;
+          }
+          .regions-grid {
+            gap: 0.35rem !important;
+            margin-top: 0.75rem !important;
+          }
+          .region-chip {
+            padding: 0.3rem 0.2rem !important;
+            font-size: 0.65rem !important;
           }
         }
       `}</style>

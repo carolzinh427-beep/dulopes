@@ -54,7 +54,7 @@ export default function Footer() {
         }} className="footer-grid">
 
           {/* Column 1: Brand & Description */}
-          <div className="footer-col">
+          <div className="footer-col footer-col-brand">
             <div style={{ marginBottom: '1rem' }}>
               <img
                 src="/images/dulopes_logo_rectangle.jpg"
@@ -73,14 +73,14 @@ export default function Footer() {
               {companyConfig.slogan}
             </p>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--orange-main)', fontWeight: '700' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--orange-main)', fontWeight: '700' }} className="footer-badge">
               <Globe size={15} />
               <span>Atendimento em todo o Brasil</span>
             </div>
           </div>
 
           {/* Column 2: Navigation Links */}
-          <div className="footer-col">
+          <div className="footer-col footer-col-nav">
             <h4 style={{ color: 'var(--white)', fontSize: '1rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '0.02em' }}>
               Navegação
             </h4>
@@ -109,7 +109,7 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Contact & Address */}
-          <div className="footer-col">
+          <div className="footer-col footer-col-contact">
             <h4 style={{ color: 'var(--white)', fontSize: '1rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '0.02em' }}>
               Contato & Sede
             </h4>
@@ -183,21 +183,69 @@ export default function Footer() {
       <style>{`
         @media (max-width: 640px) {
           #footer {
-            padding-top: 1.75rem !important;
-            padding-bottom: 1.25rem !important;
+            padding-top: 1.25rem !important;
+            padding-bottom: 1rem !important;
           }
           .footer-grid {
-            grid-template-columns: 1fr !important;
-            gap: 1.25rem !important;
-            margin-bottom: 1.25rem !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.75rem !important;
+            margin-bottom: 0.85rem !important;
+          }
+          .footer-col-brand {
+            grid-column: 1 / -1 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding-bottom: 0.5rem !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            margin-bottom: 0.25rem !important;
+          }
+          .footer-col-brand div {
+            margin-bottom: 0 !important;
+          }
+          .footer-col-brand img {
+            height: 28px !important;
           }
           .footer-slogan {
-            margin-bottom: 0.5rem !important;
-            font-size: 0.8rem !important;
+            display: none !important;
+          }
+          .footer-badge {
+            font-size: 0.75rem !important;
+          }
+          .footer-col-nav {
+            grid-column: 1 !important;
+          }
+          .footer-col-contact {
+            grid-column: 2 !important;
+          }
+          .footer-col-nav h4, .footer-col-contact h4 {
+            font-size: 0.825rem !important;
+            margin-bottom: 0.4rem !important;
+          }
+          .footer-col-nav ul {
+            gap: 0.3rem !important;
+          }
+          .footer-col-nav a {
+            font-size: 0.75rem !important;
+          }
+          .footer-col-contact ul {
+            gap: 0.4rem !important;
+            font-size: 0.72rem !important;
+          }
+          .footer-col-contact li {
+            gap: 0.35rem !important;
+          }
+          .footer-col-contact svg {
+            width: 13px !important;
+            height: 13px !important;
+            margin-top: 2px !important;
           }
           .sub-footer {
-            padding-top: 0.85rem !important;
-            font-size: 0.725rem !important;
+            padding-top: 0.65rem !important;
+            font-size: 0.68rem !important;
+            flex-direction: column !important;
+            gap: 0.2rem !important;
+            text-align: center !important;
           }
         }
       `}</style>

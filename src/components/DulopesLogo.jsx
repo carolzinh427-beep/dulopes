@@ -6,12 +6,12 @@ export default function DulopesLogo({
   showSubtitle = true,
   className = ''
 }) {
-  // Height mappings for exact responsive scaling
+  // Height mappings for exact responsive scaling (larger display)
   const heightMap = {
-    small: showSubtitle ? 38 : 28,
-    medium: showSubtitle ? 52 : 38,
-    large: showSubtitle ? 72 : 54,
-    xlarge: showSubtitle ? 96 : 72
+    small: showSubtitle ? 42 : 30,
+    medium: showSubtitle ? 60 : 44,
+    large: showSubtitle ? 95 : 72,
+    xlarge: showSubtitle ? 145 : 110
   };
 
   const h = heightMap[size] || heightMap.medium;

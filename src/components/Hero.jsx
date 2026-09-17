@@ -2,7 +2,6 @@ import React from 'react';
 import { ArrowRight, MessageCircle, ShieldCheck, MapPin, Mail } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import DulopesLogo from './DulopesLogo';
-import CircularText from './CircularText';
 
 export default function Hero() {
   const handleWhatsAppClick = () => {
@@ -43,17 +42,17 @@ export default function Hero() {
 
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: '3rem',
-          alignItems: 'center'
-        }} className="hero-grid-no-img">
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center'
+        }}>
 
-          {/* Clean Hero Layout centered around Official Logo & Impact Statement */}
-          <div style={{ color: 'var(--white)', maxWidth: '820px', margin: '0 auto', textAlign: 'center' }}>
+          {/* Clean Hero Layout centered around Official Static Logo & Impact Statement */}
+          <div style={{ color: 'var(--white)', maxWidth: '820px', width: '100%' }}>
 
-            {/* Official Logo with Animated Rotating Gear */}
-            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
+            {/* Official Logo (Static, No Rotation Effect) */}
+            <div style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'center' }}>
               <DulopesLogo variant="light" size="large" showSubtitle={true} />
             </div>
 
@@ -137,31 +136,8 @@ export default function Hero() {
 
           </div>
 
-          {/* Overlaid CircularText Decorative Badge */}
-          <div style={{
-            position: 'absolute',
-            bottom: '20px',
-            right: '20px',
-            opacity: 0.85,
-            pointerEvents: 'auto'
-          }} className="hero-circular-badge">
-            <CircularText
-              text="DULOPES * MÁQUINAS * INOX * BRASIL * "
-              spinDuration={16}
-              onHover="speedUp"
-            />
-          </div>
-
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          .hero-circular-badge {
-            display: none !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }

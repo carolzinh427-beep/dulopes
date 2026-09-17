@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 
 export default function DulopesLogo({
   variant = 'dark', // 'dark' (navy text for light bg) or 'light' (white text for dark bg)
   size = 'medium', // 'small', 'medium', 'large'
   showSubtitle = true,
-  interactive = true,
   className = ''
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   // Scaled dimensions
   const scaleMap = {
     small: { width: 140, height: 42, fontSize: 24, gearSize: 28, subSize: 8 },
@@ -22,19 +18,13 @@ export default function DulopesLogo({
   const textColor = variant === 'light' ? '#FFFFFF' : '#0A192F';
   const subtextColor = variant === 'light' ? '#94A3B8' : '#0F2547';
 
-  // Rotation duration: 15s normal, 3s on hover
-  const spinDuration = isHovered ? 3 : 15;
-
   return (
     <div
       className={`dulopes-logo-container ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       style={{
         display: 'inline-flex',
         flexDirection: 'column',
         alignItems: 'center',
-        cursor: interactive ? 'pointer' : 'default',
         userSelect: 'none'
       }}
     >
@@ -53,7 +43,7 @@ export default function DulopesLogo({
           DUL
         </span>
 
-        {/* Animated Rotating Gear with Wrench Inside */}
+        {/* Static Gear with Wrench Inside (No Spin Effect) */}
         <div style={{
           width: `${dim.gearSize}px`,
           height: `${dim.gearSize}px`,
@@ -63,21 +53,12 @@ export default function DulopesLogo({
           margin: '0 2px',
           position: 'relative'
         }}>
-          <motion.svg
+          <svg
             width={dim.gearSize}
             height={dim.gearSize}
             viewBox="0 0 100 100"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            animate={{ rotate: 360 }}
-            transition={{
-              rotate: {
-                repeat: Infinity,
-                duration: spinDuration,
-                ease: "linear"
-              }
-            }}
-            style={{ transformOrigin: 'center center' }}
           >
             {/* Gear Outer Teeth Ring */}
             <path
@@ -106,7 +87,7 @@ export default function DulopesLogo({
                 strokeLinejoin="round"
               />
             </g>
-          </motion.svg>
+          </svg>
         </div>
 
         {/* PES */}

@@ -10,6 +10,7 @@ export default function Catalog({ onOpenModal }) {
   const [selectedCategory, setSelectedCategory] = useState('todas');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
 
   // Subscribe to real-time public products from Firestore
   useEffect(() => {
@@ -35,6 +36,11 @@ export default function Catalog({ onOpenModal }) {
 
     return matchesCategory && matchesSearch;
   });
+
+  // Limit displayed items to 8 when showAll is false
+  const displayedProducts = (showAll || filteredProducts.length <= 8)
+    ? filteredProducts
+    : filteredProducts.slice(0, 8);
 
   return (
     <section id="catalogo" style={{
@@ -129,7 +135,10 @@ export default function Catalog({ onOpenModal }) {
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
+                  onClick={() => {
+                    setSelectedCategory(cat.id);
+                    setShowAll(false);
+                  }}
                   style={{
                     padding: '0.65rem 1.15rem',
                     fontSize: '0.875rem',
@@ -150,25 +159,40 @@ export default function Catalog({ onOpenModal }) {
           </div>
         </div>
 
-        {/* Catalog Product Grid */}
+        {/* Catalog Product Grid - Smaller Card Dimensions */}
         {loading ? (
           <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--gray-dark)' }}>
             Carregando catálogo de máquinas...
           </div>
         ) : filteredProducts.length > 0 ? (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '1.75rem'
-          }}>
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onOpenModal={onOpenModal}
-              />
-            ))}
-          </div>
+          <>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+              gap: '1.25rem'
+            }}>
+              {displayedProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onOpenModal={onOpenModal}
+                />
+              ))}
+            </div>
+
+            {/* Ver Catálogo Completo Button (Triggered when > 8 machines available) */}
+            {filteredProducts.length > 8 && !showAll && (
+              <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+                <button
+                  onClick={() => setShowAll(true)}
+                  className="btn btn-navy"
+                  style={{ padding: '0.85rem 2rem', fontSize: '0.95rem' }}
+                >
+                  <span>Ver catálogo completo ({filteredProducts.length} máquinas)</span>
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           /* Empty Search State */
           <div style={{
@@ -187,6 +211,7 @@ export default function Catalog({ onOpenModal }) {
               onClick={() => {
                 setSelectedCategory('todas');
                 setSearchQuery('');
+                setShowAll(false);
               }}
               className="btn btn-navy"
             >

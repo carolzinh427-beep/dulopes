@@ -32,7 +32,7 @@ export default function Footer() {
           {/* Column 1: Brand & Description */}
           <div>
             <div style={{ marginBottom: '1.25rem' }}>
-              <DulopesLogo variant="light" size="medium" showSubtitle={true} />
+              <DulopesLogo variant="light" size="small" showSubtitle={true} />
             </div>
 
             <p style={{ fontSize: '0.875rem', lineHeight: '1.6', color: '#94A3B8', marginBottom: '1.25rem' }}>

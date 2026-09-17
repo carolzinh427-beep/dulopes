@@ -3,6 +3,7 @@ import { ArrowRight, MessageCircle, ShieldCheck, MapPin, Mail } from 'lucide-rea
 import { companyConfig } from '../data/companyData';
 import DulopesLogo from './DulopesLogo';
 import FoldText from './FoldText';
+import SpecularButton from './SpecularButton';
 
 export default function Hero() {
   const handleWhatsAppClick = () => {
@@ -91,7 +92,7 @@ export default function Hero() {
               Máquinas e equipamentos desenvolvidos para empresas que buscam mais eficiência, qualidade e produtividade
             </p>
 
-            {/* Buttons */}
+            {/* Specular Action Buttons */}
             <div style={{
               display: 'flex',
               flexWrap: 'wrap',
@@ -100,15 +101,46 @@ export default function Hero() {
               justifyContent: 'center',
               marginBottom: '3rem'
             }}>
-              <a href="#catalogo" className="btn btn-orange" style={{ padding: '1.05rem 2.2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px rgba(255, 107, 0, 0.35)' }}>
+              <SpecularButton
+                size="md"
+                radius={12}
+                tint="#FF6B00"
+                tintOpacity={0.95}
+                textColor="#ffffff"
+                lineColor="#ffffff"
+                baseColor="#FF6B00"
+                intensity={1.2}
+                shineSize={18}
+                shineFade={40}
+                speed={0.4}
+                autoAnimate={true}
+                onClick={() => {
+                  const el = document.getElementById('catalogo');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 <span>Ver máquinas</span>
                 <ArrowRight size={20} />
-              </a>
+              </SpecularButton>
 
-              <button onClick={handleWhatsAppClick} className="btn btn-navy" style={{ padding: '1.05rem 2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px rgba(11, 37, 69, 0.25)' }}>
+              <SpecularButton
+                size="md"
+                radius={12}
+                tint="#0B2545"
+                tintOpacity={0.95}
+                textColor="#ffffff"
+                lineColor="#FF6B00"
+                baseColor="#0B2545"
+                intensity={1.2}
+                shineSize={18}
+                shineFade={40}
+                speed={0.4}
+                autoAnimate={true}
+                onClick={handleWhatsAppClick}
+              >
                 <MessageCircle size={20} color="var(--whatsapp-green)" />
                 <span>Falar com um especialista</span>
-              </button>
+              </SpecularButton>
             </div>
 
             {/* Quick Feature Badges & Email */}

@@ -97,10 +97,7 @@ export default function Header() {
           height: isScrolled ? '68px' : '76px',
           transition: 'height 0.3s ease'
         }}>
-          {/* Clean Transparent Dulopes Logo */}
-          <a href="#inicio" style={{ display: 'inline-flex', alignItems: 'center' }}>
-            <DulopesLogo variant="light" size="medium" showSubtitle={true} />
-          </a>
+          {/* No Logo above hero as requested */}
 
           {/* Desktop Navigation */}
           <nav style={{ display: 'none' }} className="desktop-nav">
@@ -177,8 +174,7 @@ export default function Header() {
           animation: 'fadeIn 0.25s ease forwards'
         }}>
           {/* Drawer Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <DulopesLogo variant="light" size="small" showSubtitle={true} />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '2rem' }}>
             <button
               onClick={closeMenu}
               style={{

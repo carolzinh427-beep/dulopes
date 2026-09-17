@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowRight, MessageCircle, ShieldCheck, Award, MapPin } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
+import DulopesLogo from './DulopesLogo';
+import CircularText from './CircularText';
 
 export default function Hero() {
   const handleWhatsAppClick = () => {
@@ -13,8 +15,8 @@ export default function Hero() {
       backgroundColor: 'var(--navy-dark)',
       position: 'relative',
       overflow: 'hidden',
-      paddingTop: '2.5rem',
-      paddingBottom: '4.5rem',
+      paddingTop: '3rem',
+      paddingBottom: '5rem',
       borderBottom: '3px solid var(--orange-main)'
     }}>
       {/* Geometric background accents */}
@@ -25,7 +27,7 @@ export default function Hero() {
         width: '500px',
         height: '500px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(255,107,0,0.12) 0%, rgba(10,25,47,0) 70%)',
+        background: 'radial-gradient(circle, rgba(255,107,0,0.14) 0%, rgba(10,25,47,0) 70%)',
         pointerEvents: 'none'
       }} />
       <div style={{
@@ -43,12 +45,18 @@ export default function Hero() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr',
-          gap: '2.5rem',
+          gap: '3rem',
           alignItems: 'center'
         }} className="hero-grid">
 
-          {/* Left Column: Text Content */}
+          {/* Left Column: Official Logo + Hero Content */}
           <div style={{ color: 'var(--white)' }}>
+
+            {/* Prominent Official Logo with Animated Spinning Gear */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <DulopesLogo variant="light" size="large" showSubtitle={true} />
+            </div>
+
             {/* Small Support Tag */}
             <div className="section-tag section-tag-dark" style={{ marginBottom: '1.25rem' }}>
               <Award size={14} color="var(--orange-main)" />
@@ -122,8 +130,23 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Hero Visual Showcase */}
+          {/* Right Column: Hero Visual Showcase with React Bits CircularText Component */}
           <div style={{ position: 'relative' }}>
+            {/* React Bits CircularText Component Overlay */}
+            <div style={{
+              position: 'absolute',
+              top: '-45px',
+              right: '-45px',
+              zIndex: 10,
+              pointerEvents: 'auto'
+            }} className="circular-text-container">
+              <CircularText
+                text="DULOPES * MÁQUINAS * INOX * BRASIL * "
+                spinDuration={16}
+                onHover="speedUp"
+              />
+            </div>
+
             {/* Main Showcase Container */}
             <div style={{
               position: 'relative',
@@ -211,6 +234,13 @@ export default function Hero() {
         @media (min-width: 900px) {
           .hero-grid {
             grid-template-columns: 1.1fr 0.9fr !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .circular-text-container {
+            transform: scale(0.7) !important;
+            top: -65px !important;
+            right: -65px !important;
           }
         }
       `}</style>

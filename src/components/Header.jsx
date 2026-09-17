@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, Menu, X, Phone, ChevronRight } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
+import DulopesLogo from './DulopesLogo';
 
-export default function Header({ onSelectProduct }) {
+export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,7 +37,7 @@ export default function Header({ onSelectProduct }) {
 
   return (
     <>
-      {/* Top Banner */}
+      {/* Top Ribbon */}
       <div style={{
         backgroundColor: '#050E1A',
         color: '#94A3B8',
@@ -65,8 +66,8 @@ export default function Header({ onSelectProduct }) {
               <Phone size={13} color="var(--orange-main)" />
               <span>{companyConfig.whatsappDisplay}</span>
             </a>
-            <span style={{ opacity: 0.3, display: 'none', md: 'inline' }}>|</span>
-            <span style={{ display: 'none', md: 'inline' }}>Cariacica - ES</span>
+            <span style={{ opacity: 0.3 }} className="hide-mobile">|</span>
+            <span className="hide-mobile">Cariacica - ES</span>
           </div>
         </div>
       </div>
@@ -78,7 +79,7 @@ export default function Header({ onSelectProduct }) {
         zIndex: 1000,
         backgroundColor: isScrolled ? 'rgba(10, 25, 47, 0.95)' : 'var(--navy-dark)',
         backdropFilter: 'blur(12px)',
-        borderBottom: isScrolled ? '1px solid rgba(255, 107, 0, 0.2)' : '1px solid rgba(255, 255, 255, 0.08)',
+        borderBottom: isScrolled ? '1px solid rgba(255, 107, 0, 0.3)' : '1px solid rgba(255, 255, 255, 0.08)',
         transition: 'all 0.3s ease',
         boxShadow: isScrolled ? '0 10px 30px rgba(5, 14, 26, 0.5)' : 'none'
       }}>
@@ -89,47 +90,13 @@ export default function Header({ onSelectProduct }) {
           height: isScrolled ? '68px' : '76px',
           transition: 'height 0.3s ease'
         }}>
-          {/* Logo Brand */}
-          <a href="#inicio" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{
-              width: '42px',
-              height: '42px',
-              backgroundColor: 'var(--navy-main)',
-              border: '2px solid var(--orange-main)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(255, 107, 0, 0.25)'
-            }}>
-              <span style={{ color: 'var(--white)', fontWeight: '900', fontSize: '1.25rem', letterSpacing: '-0.5px' }}>
-                D<span style={{ color: 'var(--orange-main)' }}>L</span>
-              </span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{
-                color: 'var(--white)',
-                fontWeight: '800',
-                fontSize: '1.15rem',
-                lineHeight: '1.1',
-                letterSpacing: '-0.02em'
-              }}>
-                DULOPES
-              </span>
-              <span style={{
-                color: 'var(--orange-main)',
-                fontSize: '0.68rem',
-                fontWeight: '700',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase'
-              }}>
-                MÁQUINAS E EQUIPAMENTOS | INOX
-              </span>
-            </div>
+          {/* Animated Official Dulopes Logo */}
+          <a href="#inicio" style={{ display: 'flex', alignItems: 'center' }}>
+            <DulopesLogo variant="light" size="medium" showSubtitle={true} />
           </a>
 
           {/* Desktop Navigation */}
-          <nav style={{ display: 'none', md: 'flex' }} className="desktop-nav">
+          <nav style={{ display: 'none' }} className="desktop-nav">
             <ul style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }}>
               {navLinks.map((link) => (
                 <li key={link.name}>
@@ -153,7 +120,7 @@ export default function Header({ onSelectProduct }) {
           </nav>
 
           {/* Desktop CTA */}
-          <div style={{ display: 'none', md: 'flex' }} className="desktop-cta">
+          <div style={{ display: 'none' }} className="desktop-cta">
             <button
               onClick={handleWhatsAppClick}
               className="btn btn-orange"
@@ -204,23 +171,7 @@ export default function Header({ onSelectProduct }) {
         }}>
           {/* Drawer Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <div style={{
-                width: '36px',
-                height: '36px',
-                backgroundColor: 'var(--navy-main)',
-                border: '2px solid var(--orange-main)',
-                borderRadius: '6px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <span style={{ color: 'var(--white)', fontWeight: '900', fontSize: '1rem' }}>DL</span>
-              </div>
-              <span style={{ color: 'var(--white)', fontWeight: '800', fontSize: '1rem' }}>
-                DULOPES MÁQUINAS
-              </span>
-            </div>
+            <DulopesLogo variant="light" size="small" showSubtitle={false} />
             <button
               onClick={closeMenu}
               style={{
@@ -298,6 +249,9 @@ export default function Header({ onSelectProduct }) {
           .desktop-nav { display: flex !important; }
           .desktop-cta { display: flex !important; }
           .mobile-menu-btn { display: none !important; }
+        }
+        @media (max-width: 640px) {
+          .hide-mobile { display: none !important; }
         }
       `}</style>
     </>

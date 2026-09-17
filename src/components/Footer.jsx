@@ -1,6 +1,7 @@
 import React from 'react';
-import { Phone, Instagram, MapPin, Globe, ChevronRight } from 'lucide-react';
+import { Phone, Instagram, MapPin, Globe, Mail, ChevronRight } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
+import DulopesLogo from './DulopesLogo';
 
 export default function Footer() {
   const links = [
@@ -30,27 +31,8 @@ export default function Footer() {
 
           {/* Column 1: Brand & Description */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-              <div style={{
-                width: '38px',
-                height: '38px',
-                backgroundColor: 'var(--navy-main)',
-                border: '2px solid var(--orange-main)',
-                borderRadius: '6px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <span style={{ color: 'var(--white)', fontWeight: '900', fontSize: '1.1rem' }}>DL</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ color: 'var(--white)', fontWeight: '800', fontSize: '1.1rem' }}>
-                  DULOPES
-                </span>
-                <span style={{ color: 'var(--orange-main)', fontSize: '0.65rem', fontWeight: '700', letterSpacing: '0.1em' }}>
-                  MÁQUINAS E EQUIPAMENTOS | INOX
-                </span>
-              </div>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <DulopesLogo variant="light" size="medium" showSubtitle={true} />
             </div>
 
             <p style={{ fontSize: '0.875rem', lineHeight: '1.6', color: '#94A3B8', marginBottom: '1.25rem' }}>
@@ -109,6 +91,16 @@ export default function Footer() {
               </li>
 
               <li style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
+                <Mail size={16} color="var(--orange-main)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                <div>
+                  <div style={{ color: '#E2E8F0', fontWeight: '700' }}>E-mail Comercial</div>
+                  <a href={`mailto:${companyConfig.email}`} style={{ color: '#94A3B8' }}>
+                    {companyConfig.email}
+                  </a>
+                </div>
+              </li>
+
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
                 <Instagram size={16} color="var(--orange-main)" style={{ flexShrink: 0, marginTop: '3px' }} />
                 <div>
                   <div style={{ color: '#E2E8F0', fontWeight: '700' }}>Instagram</div>
@@ -149,7 +141,7 @@ export default function Footer() {
             © {new Date().getFullYear()} {companyConfig.nome}. Todos os direitos reservados.
           </div>
           <div>
-            Máquinas e Equipamentos em Aço Inoxidável • Cariacica - ES
+            {companyConfig.email} • Cariacica - ES
           </div>
         </div>
       </div>

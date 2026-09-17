@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, MessageCircle, ShieldCheck, Award, MapPin } from 'lucide-react';
+import { ArrowRight, MessageCircle, ShieldCheck, MapPin, Mail } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import DulopesLogo from './DulopesLogo';
 import CircularText from './CircularText';
@@ -15,19 +15,19 @@ export default function Hero() {
       backgroundColor: 'var(--navy-dark)',
       position: 'relative',
       overflow: 'hidden',
-      paddingTop: '3rem',
+      paddingTop: '3.5rem',
       paddingBottom: '5rem',
       borderBottom: '3px solid var(--orange-main)'
     }}>
-      {/* Geometric background accents */}
+      {/* Background radial glowing accents */}
       <div style={{
         position: 'absolute',
         top: '-10%',
-        right: '-5%',
-        width: '500px',
-        height: '500px',
+        right: '10%',
+        width: '550px',
+        height: '550px',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(255,107,0,0.14) 0%, rgba(10,25,47,0) 70%)',
+        background: 'radial-gradient(circle, rgba(255,107,0,0.15) 0%, rgba(10,25,47,0) 70%)',
         pointerEvents: 'none'
       }} />
       <div style={{
@@ -47,200 +47,118 @@ export default function Hero() {
           gridTemplateColumns: '1fr',
           gap: '3rem',
           alignItems: 'center'
-        }} className="hero-grid">
+        }} className="hero-grid-no-img">
 
-          {/* Left Column: Official Logo + Hero Content */}
-          <div style={{ color: 'var(--white)' }}>
+          {/* Clean Hero Layout centered around Official Logo & Impact Statement */}
+          <div style={{ color: 'var(--white)', maxWidth: '820px', margin: '0 auto', textAlign: 'center' }}>
 
-            {/* Prominent Official Logo with Animated Spinning Gear */}
-            <div style={{ marginBottom: '1.5rem' }}>
+            {/* Official Logo with Animated Rotating Gear */}
+            <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
               <DulopesLogo variant="light" size="large" showSubtitle={true} />
             </div>
 
-            {/* Small Support Tag */}
-            <div className="section-tag section-tag-dark" style={{ marginBottom: '1.25rem' }}>
-              <Award size={14} color="var(--orange-main)" />
-              <span>MÁQUINAS E EQUIPAMENTOS PROFISSIONAIS</span>
-            </div>
-
-            {/* Main Title */}
+            {/* Main Title - Without Quotes, Without Period */}
             <h1 style={{
               color: 'var(--white)',
-              fontSize: 'clamp(2rem, 4.5vw, 3.25rem)',
-              fontWeight: '800',
+              fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
+              fontWeight: '900',
               lineHeight: '1.15',
-              letterSpacing: '-0.025em',
-              marginBottom: '1.25rem'
+              letterSpacing: '-0.02em',
+              marginBottom: '1.5rem'
             }}>
-              "Precisão e produtividade que chega em <span style={{
+              Precisão e produtividade que chega em <span style={{
                 color: 'var(--orange-main)',
                 position: 'relative',
                 display: 'inline-block'
               }}>
                 todo Brasil
-              </span>"
+              </span>
             </h1>
 
             {/* Subtitle */}
             <p style={{
               color: '#CBD5E1',
-              fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+              fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
               lineHeight: '1.6',
-              marginBottom: '2rem',
-              maxWidth: '580px'
+              marginBottom: '2.5rem',
+              maxWidth: '680px',
+              margin: '0 auto 2.5rem auto'
             }}>
-              Máquinas e equipamentos desenvolvidos para empresas que buscam mais eficiência, qualidade e produtividade.
+              Máquinas e equipamentos desenvolvidos para empresas que buscam mais eficiência, qualidade e produtividade
             </p>
 
             {/* Buttons */}
             <div style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '1rem',
+              gap: '1.25rem',
               alignItems: 'center',
-              marginBottom: '2.5rem'
+              justifyContent: 'center',
+              marginBottom: '3rem'
             }}>
-              <a href="#catalogo" className="btn btn-orange" style={{ padding: '0.95rem 1.8rem', fontSize: '1rem' }}>
+              <a href="#catalogo" className="btn btn-orange" style={{ padding: '1.05rem 2rem', fontSize: '1.05rem' }}>
                 <span>Ver máquinas</span>
-                <ArrowRight size={18} />
+                <ArrowRight size={20} />
               </a>
 
-              <button onClick={handleWhatsAppClick} className="btn btn-outline-white" style={{ padding: '0.95rem 1.6rem', fontSize: '1rem' }}>
-                <MessageCircle size={18} color="var(--whatsapp-green)" />
+              <button onClick={handleWhatsAppClick} className="btn btn-outline-white" style={{ padding: '1.05rem 1.8rem', fontSize: '1.05rem' }}>
+                <MessageCircle size={20} color="var(--whatsapp-green)" />
                 <span>Falar com um especialista</span>
               </button>
             </div>
 
-            {/* Quick Micro Features */}
+            {/* Quick Feature Badges & Email */}
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-              gap: '1rem',
-              paddingTop: '1.5rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '2rem',
+              flexWrap: 'wrap',
+              paddingTop: '1.75rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              color: '#94A3B8',
+              fontSize: '0.9rem'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94A3B8', fontSize: '0.85rem' }}>
-                <ShieldCheck size={16} color="var(--orange-main)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <ShieldCheck size={18} color="var(--orange-main)" />
                 <span>Aço Inox AISI 304</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94A3B8', fontSize: '0.85rem' }}>
-                <MapPin size={16} color="var(--orange-main)" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <MapPin size={18} color="var(--orange-main)" />
                 <span>Envio para todo o Brasil</span>
               </div>
-            </div>
-          </div>
-
-          {/* Right Column: Hero Visual Showcase with React Bits CircularText Component */}
-          <div style={{ position: 'relative' }}>
-            {/* React Bits CircularText Component Overlay */}
-            <div style={{
-              position: 'absolute',
-              top: '-45px',
-              right: '-45px',
-              zIndex: 10,
-              pointerEvents: 'auto'
-            }} className="circular-text-container">
-              <CircularText
-                text="DULOPES * MÁQUINAS * INOX * BRASIL * "
-                spinDuration={16}
-                onHover="speedUp"
-              />
-            </div>
-
-            {/* Main Showcase Container */}
-            <div style={{
-              position: 'relative',
-              borderRadius: 'var(--border-radius-lg)',
-              padding: '8px',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 107, 0, 0.3)',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.5)'
-            }}>
-              <div style={{
-                borderRadius: 'var(--border-radius-md)',
-                overflow: 'hidden',
-                position: 'relative',
-                aspectRatio: '4/3',
-                backgroundColor: '#050E1A'
-              }}>
-                <img
-                  src="/images/hero_equipment.jpg"
-                  alt="Linha de Máquinas e Equipamentos Dulopes Inox"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'center'
-                  }}
-                />
-
-                {/* Overlaid Tech Card */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: '1rem',
-                  left: '1rem',
-                  right: '1rem',
-                  backgroundColor: 'rgba(10, 25, 47, 0.88)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 107, 0, 0.4)',
-                  padding: '0.85rem 1.15rem',
-                  borderRadius: 'var(--border-radius-md)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '1rem'
-                }}>
-                  <div>
-                    <div style={{ color: 'var(--orange-main)', fontSize: '0.725rem', fontWeight: '800', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                      Padrão de Fabricação
-                    </div>
-                    <div style={{ color: 'var(--white)', fontWeight: '700', fontSize: '0.925rem' }}>
-                      Aço Inoxidável & Tecnologia Industrial
-                    </div>
-                  </div>
-                  <div style={{
-                    backgroundColor: 'var(--orange-main)',
-                    color: 'var(--white)',
-                    fontSize: '0.75rem',
-                    fontWeight: '800',
-                    padding: '0.35rem 0.75rem',
-                    borderRadius: 'var(--border-radius-sm)',
-                    whiteSpace: 'nowrap'
-                  }}>
-                    INOX 304
-                  </div>
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Mail size={18} color="var(--orange-main)" />
+                <a href={`mailto:${companyConfig.email}`} style={{ color: '#E2E8F0', textDecoration: 'none' }}>
+                  {companyConfig.email}
+                </a>
               </div>
             </div>
 
-            {/* Glowing Backdrop Circle */}
-            <div style={{
-              position: 'absolute',
-              bottom: '-20px',
-              left: '-20px',
-              width: '100px',
-              height: '100px',
-              backgroundColor: 'var(--orange-main)',
-              filter: 'blur(60px)',
-              opacity: 0.3,
-              zIndex: -1
-            }} />
+          </div>
+
+          {/* Overlaid CircularText Decorative Badge */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            right: '20px',
+            opacity: 0.85,
+            pointerEvents: 'auto'
+          }} className="hero-circular-badge">
+            <CircularText
+              text="DULOPES * MÁQUINAS * INOX * BRASIL * "
+              spinDuration={16}
+              onHover="speedUp"
+            />
           </div>
 
         </div>
       </div>
 
       <style>{`
-        @media (min-width: 900px) {
-          .hero-grid {
-            grid-template-columns: 1.1fr 0.9fr !important;
-          }
-        }
-        @media (max-width: 640px) {
-          .circular-text-container {
-            transform: scale(0.7) !important;
-            top: -65px !important;
-            right: -65px !important;
+        @media (max-width: 768px) {
+          .hero-circular-badge {
+            display: none !important;
           }
         }
       `}</style>

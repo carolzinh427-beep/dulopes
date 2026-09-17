@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, Menu, X, Phone, ChevronRight } from 'lucide-react';
+import { MessageCircle, Menu, X, Phone, Mail, ChevronRight } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import DulopesLogo from './DulopesLogo';
 
@@ -67,7 +67,14 @@ export default function Header() {
               <span>{companyConfig.whatsappDisplay}</span>
             </a>
             <span style={{ opacity: 0.3 }} className="hide-mobile">|</span>
-            <span className="hide-mobile">Cariacica - ES</span>
+            <a
+              href={`mailto:${companyConfig.email}`}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#E2E8F0', transition: 'color 0.2s' }}
+              className="hide-mobile"
+            >
+              <Mail size={13} color="var(--orange-main)" />
+              <span>{companyConfig.email}</span>
+            </a>
           </div>
         </div>
       </div>
@@ -237,7 +244,7 @@ export default function Header() {
               fontSize: '0.75rem',
               marginTop: '0.85rem'
             }}>
-              Atendimento para todo o Brasil • Cariacica - ES
+              {companyConfig.email} • Cariacica - ES
             </p>
           </div>
         </div>

@@ -3,6 +3,7 @@ export const companyConfig = {
   nomeCurto: "Dulopes Máquinas",
   slogan: "Precisão e produtividade que chega em todo Brasil",
   descricao: "Máquinas e equipamentos profissionais para empresas. Atendimento em todo o Brasil a partir de Cariacica - ES.",
+  email: "contato@dulopes.com",
   whatsapp: "+55 27 98898-1312",
   whatsappFormatted: "5527988981312",
   whatsappDisplay: "(27) 98898-1312",
@@ -38,7 +39,7 @@ export const products = [
       "/images/envasadora_inox.jpg",
       "/images/hero_equipment.jpg"
     ],
-    preco: null, // "Consulte condições"
+    preco: null,
     precoPromocional: null,
     status: "Pronta Entrega",
     destaque: true,
@@ -146,30 +147,6 @@ export const products = [
       "Motor": "Motor de alta performance e baixo ruído",
       "Uso": "Padarias, confeitarias, cozinhas industriais e fábricas de alimentos"
     }
-  },
-  {
-    id: "linha-embaladora-automatizada-inox",
-    nome: "Linha de Dosagem e Empacotamento Automatizada Inox",
-    categoria: "maquinas",
-    categoriasSecundarias: ["industria", "inox"],
-    descricao: "Solução completa para envase, selagem e pesagem automatizada de grãos, pós e insumos.",
-    descricaoCompleta: "Sistema integrado Dulopes para maximizar a velocidade da sua linha de produção. Combina dosagem quantitativa, selagem contínua e transporte com controle via painel IHM touch screen intuitivo.",
-    imagens: [
-      "/images/hero_equipment.jpg",
-      "/images/envasadora_inox.jpg"
-    ],
-    preco: null,
-    precoPromocional: null,
-    status: "Sob Encomenda",
-    destaque: true,
-    ordem: 6,
-    especificacoes: {
-      "Integração": "Dosadora + Seladora + Esteira",
-      "Controle": "Painel Eletrônico Digital com memória de receitas",
-      "Construção": "Totalmente em Aço Inoxidável AISI 304",
-      "Produtividade": "Elevada eficiência e redução de desperdício",
-      "Suporte": "Consultoria técnica Dulopes para implementação"
-    }
   }
 ];
 
@@ -180,6 +157,7 @@ export const offers = [
     subtitulo: "Envasadoras e Dosadoras Pneumáticas com atendimento imediato",
     destaqueBadge: "Oportunidade Comercial",
     equipamento: "Envasadora e Dosadora Pneumática em Inox",
+    imagem: "/images/envasadora_inox.jpg",
     beneficios: [
       "Estrutura reforçada em Aço Inox AISI 304",
       "Pronta entrega com suporte comercial dedicado",
@@ -194,6 +172,7 @@ export const offers = [
     subtitulo: "Kits de Misturadores, Tanques e Seladoras em Aço Inox",
     destaqueBadge: "Produtividade Fabril",
     equipamento: "Soluções em Inox Dulopes",
+    imagem: "/images/tanque_misturador.jpg",
     beneficios: [
       "Grau sanitário adequado para normas de higiene",
       "Projetados para alta durabilidade e fácil higienização",
@@ -291,7 +270,7 @@ export const faqItems = [
   },
   {
     pergunta: "Como entrar em contato com a equipe?",
-    resposta: "Você pode nos chamar via WhatsApp pelo número (27) 98898-1312, acompanhar nossas redes sociais no Instagram @dulopesmaquinas ou visitar nossa sede em Cariacica - ES."
+    resposta: "Você pode nos chamar via WhatsApp pelo número (27) 98898-1312, pelo e-mail contato@dulopes.com, acompanhar nossas redes sociais no Instagram @dulopesmaquinas ou visitar nossa sede em Cariacica - ES."
   }
 ];
 

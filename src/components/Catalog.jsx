@@ -282,8 +282,8 @@ export default function Catalog({ onOpenModal }) {
             display: flex !important;
           }
           .catalog-products-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 0.35rem !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.65rem !important;
           }
         }
         @media (min-width: 641px) {

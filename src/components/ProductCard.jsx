@@ -171,8 +171,8 @@ export default function ProductCard({ product, onOpenModal }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }} className="p-card-actions">
             <button
               onClick={() => onOpenModal(product)}
-              className="btn btn-outline-navy"
-              style={{ padding: '0.65rem 0.5rem', fontSize: '0.825rem' }}
+              className="btn btn-outline-navy p-card-btn-details"
+              style={{ padding: '0.65rem 0.5rem', fontSize: '0.825rem', width: '100%', justifyContent: 'center' }}
             >
               <Eye size={15} />
               <span>Ver detalhes</span>
@@ -180,10 +180,20 @@ export default function ProductCard({ product, onOpenModal }) {
 
             <button
               onClick={handleWhatsAppInterest}
-              className="btn btn-orange"
-              style={{ padding: '0.65rem 0.5rem', fontSize: '0.825rem' }}
+              className="btn p-card-btn-interest"
+              style={{
+                padding: '0.65rem 0.5rem',
+                fontSize: '0.825rem',
+                backgroundColor: '#050E1A',
+                color: '#FFFFFF',
+                border: '1px solid #1E293B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.35rem'
+              }}
             >
-              <MessageCircle size={15} />
+              <MessageCircle size={15} color="var(--whatsapp-green)" />
               <span>Tenho interesse</span>
             </button>
           </div>
@@ -194,28 +204,28 @@ export default function ProductCard({ product, onOpenModal }) {
     <style>{`
       @media (max-width: 640px) {
         .p-card-body {
-          padding: 0.45rem !important;
+          padding: 0.5rem !important;
         }
         .p-card-img-box {
           aspect-ratio: 4/3 !important;
         }
         .p-card-badge-box, .p-card-tag-box {
-          top: 0.25rem !important;
-          left: 0.25rem !important;
-          right: 0.25rem !important;
+          top: 0.35rem !important;
+          left: 0.35rem !important;
+          right: 0.35rem !important;
         }
         .p-card-badge-box .badge, .p-card-tag-box .badge {
-          font-size: 0.55rem !important;
-          padding: 2px 4px !important;
+          font-size: 0.6rem !important;
+          padding: 2px 5px !important;
         }
         .p-card-cat {
-          font-size: 0.6rem !important;
-          margin-bottom: 0.15rem !important;
+          font-size: 0.625rem !important;
+          margin-bottom: 0.2rem !important;
         }
         .p-card-title {
-          font-size: 0.725rem !important;
-          margin-bottom: 0.25rem !important;
-          line-height: 1.15 !important;
+          font-size: 0.8rem !important;
+          margin-bottom: 0.35rem !important;
+          line-height: 1.2 !important;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
@@ -228,23 +238,20 @@ export default function ProductCard({ product, onOpenModal }) {
           padding-top: 0.35rem !important;
         }
         .p-card-price-row {
-          margin-bottom: 0.35rem !important;
-          flex-direction: column !important;
-          gap: 0.1rem !important;
-        }
-        .p-card-price-row span {
-          font-size: 0.65rem !important;
+          display: none !important;
         }
         .p-card-actions {
           grid-template-columns: 1fr !important;
-          gap: 0.25rem !important;
+          gap: 0 !important;
         }
-        .p-card-actions button {
-          padding: 0.35rem 0.2rem !important;
-          font-size: 0.625rem !important;
+        .p-card-btn-interest {
+          display: none !important;
         }
-        .p-card-actions button span {
-          font-size: 0.6rem !important;
+        .p-card-btn-details {
+          width: 100% !important;
+          padding: 0.45rem 0.25rem !important;
+          font-size: 0.725rem !important;
+          justify-content: center !important;
         }
       }
     `}</style>

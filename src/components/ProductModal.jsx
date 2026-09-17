@@ -244,10 +244,21 @@ export default function ProductModal({ product, onClose }) {
               {/* Prominent WhatsApp CTA */}
               <button
                 onClick={handleWhatsAppClick}
-                className="btn btn-whatsapp btn-full"
-                style={{ padding: '0.95rem 1.25rem', fontSize: '1rem' }}
+                className="btn btn-full"
+                style={{
+                  padding: '0.95rem 1.25rem',
+                  fontSize: '1rem',
+                  backgroundColor: '#050E1A',
+                  color: '#FFFFFF',
+                  border: '1px solid #1E293B',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  fontWeight: '800'
+                }}
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={20} color="var(--whatsapp-green)" />
                 <span>Tenho interesse neste equipamento</span>
               </button>
             </div>

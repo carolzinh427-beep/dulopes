@@ -3,6 +3,7 @@ import { MessageCircle } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import { subscribePublicProducts } from '../services/productService';
 import AnimatedContent from './AnimatedContent';
+import GlareHover from './GlareHover';
 
 export default function Offers() {
   const [newArrivals, setNewArrivals] = useState([]);
@@ -90,14 +91,23 @@ export default function Offers() {
                 }}
                 className="offer-card"
               >
-                {/* Image container - Larger vertical format */}
-                <div style={{ height: '240px', backgroundColor: '#0F172A', overflow: 'hidden', position: 'relative' }} className="offer-img-box">
-                  <img
-                    src={item.mainImage || (item.images && item.images[0]) || '/images/envasadora_inox.jpg'}
-                    alt={item.name || item.nome}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </div>
+                {/* Image container - GlareHover vertical format */}
+                <GlareHover
+                  width="100%"
+                  glareColor="#ffffff"
+                  glareOpacity={0.4}
+                  glareAngle={-35}
+                  glareSize={250}
+                  transitionDuration={700}
+                >
+                  <div style={{ height: '240px', backgroundColor: '#0F172A', overflow: 'hidden', position: 'relative' }} className="offer-img-box">
+                    <img
+                      src={item.mainImage || (item.images && item.images[0]) || '/images/envasadora_inox.jpg'}
+                      alt={item.name || item.nome}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                </GlareHover>
 
                 {/* Card Body */}
                 <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} className="offer-body">

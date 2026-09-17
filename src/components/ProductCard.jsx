@@ -2,6 +2,7 @@ import React from 'react';
 import { Eye, MessageCircle, Shield, CheckCircle2 } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import AnimatedContent from './AnimatedContent';
+import GlareHover from './GlareHover';
 
 export default function ProductCard({ product, onOpenModal }) {
   const handleWhatsAppInterest = (e) => {
@@ -27,64 +28,73 @@ export default function ProductCard({ product, onOpenModal }) {
       <div
         onClick={() => onOpenModal(product)}
         className="card-hover-effect"
-      style={{
-        backgroundColor: 'var(--white)',
-        borderRadius: 'var(--border-radius-md)',
-        overflow: 'hidden',
-        border: '1px solid var(--gray-light)',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        cursor: 'pointer',
-        position: 'relative'
-      }}
-    >
-      {/* Product Image Area */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        aspectRatio: '4/3',
-        backgroundColor: '#0F172A',
-        overflow: 'hidden'
-      }}>
-        <img
-          src={product.imagens[0]}
-          alt={product.nome}
-          style={{
+        style={{
+          backgroundColor: 'var(--white)',
+          borderRadius: 'var(--border-radius-md)',
+          overflow: 'hidden',
+          border: '1px solid var(--gray-light)',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          cursor: 'pointer',
+          position: 'relative'
+        }}
+      >
+        {/* Product Image Area with GlareHover */}
+        <GlareHover
+          width="100%"
+          glareColor="#ffffff"
+          glareOpacity={0.4}
+          glareAngle={-35}
+          glareSize={250}
+          transitionDuration={700}
+        >
+          <div style={{
+            position: 'relative',
             width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            transition: 'transform 0.4s ease'
-          }}
-          onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
-          onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-        />
+            aspectRatio: '4/3',
+            backgroundColor: '#0F172A',
+            overflow: 'hidden'
+          }}>
+            <img
+              src={product.imagens[0]}
+              alt={product.nome}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                transition: 'transform 0.4s ease'
+              }}
+              onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+              onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+            />
 
-        {/* Status Badge */}
-        <div style={{
-          position: 'absolute',
-          top: '0.75rem',
-          left: '0.75rem',
-          zIndex: 2
-        }}>
-          <span className={`badge ${isProntaEntrega ? 'badge-status' : 'badge-status-encomenda'}`}>
-            <CheckCircle2 size={12} />
-            {product.status}
-          </span>
-        </div>
+            {/* Status Badge */}
+            <div style={{
+              position: 'absolute',
+              top: '0.75rem',
+              left: '0.75rem',
+              zIndex: 4
+            }}>
+              <span className={`badge ${isProntaEntrega ? 'badge-status' : 'badge-status-encomenda'}`}>
+                <CheckCircle2 size={12} />
+                {product.status}
+              </span>
+            </div>
 
-        {/* Feature Tag */}
-        <div style={{
-          position: 'absolute',
-          top: '0.75rem',
-          right: '0.75rem',
-          zIndex: 2
-        }}>
-          <span className="badge" style={{ backgroundColor: 'rgba(10, 25, 47, 0.85)', color: 'var(--white)', backdropFilter: 'blur(4px)' }}>
-            INOX 304
-          </span>
-        </div>
-      </div>
+            {/* Feature Tag */}
+            <div style={{
+              position: 'absolute',
+              top: '0.75rem',
+              right: '0.75rem',
+              zIndex: 4
+            }}>
+              <span className="badge" style={{ backgroundColor: 'rgba(10, 25, 47, 0.85)', color: 'var(--white)', backdropFilter: 'blur(4px)' }}>
+                INOX 304
+              </span>
+            </div>
+          </div>
+        </GlareHover>
 
       {/* Product Content Body */}
       <div style={{

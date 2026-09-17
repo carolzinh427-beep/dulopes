@@ -178,7 +178,7 @@ export default function Header() {
         }}>
           {/* Drawer Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <DulopesLogo variant="light" size="small" showSubtitle={false} />
+            <DulopesLogo variant="light" size="small" showSubtitle={true} />
             <button
               onClick={closeMenu}
               style={{

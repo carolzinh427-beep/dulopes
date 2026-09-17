@@ -53,7 +53,7 @@ export default function Hero() {
               border: '1px solid rgba(255, 255, 255, 0.6)',
               boxShadow: '0 12px 30px rgba(11, 37, 69, 0.15)'
             }}>
-              <DulopesLogo variant="dark" size="xlarge" showSubtitle={true} has3DEffect={true} />
+              <DulopesLogo variant="dark" size="xlarge" showSubtitle={true} />
             </div>
 
             {/* Main Impact Statement - Dark Navy Metallic Typography */}

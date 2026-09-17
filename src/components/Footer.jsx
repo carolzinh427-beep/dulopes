@@ -7,7 +7,6 @@ export default function Footer() {
   const links = [
     { name: 'Início', href: '#inicio' },
     { name: 'Máquinas', href: '#catalogo' },
-    { name: 'Soluções', href: '#solucoes' },
     { name: 'Sobre', href: '#por-que-dulopes' },
     { name: 'FAQ', href: '#faq' },
     { name: 'Contato', href: '#contato' }

@@ -22,7 +22,6 @@ export default function Header() {
   const navLinks = [
     { name: 'Início', href: '#inicio' },
     { name: 'Máquinas', href: '#catalogo' },
-    { name: 'Soluções', href: '#solucoes' },
     { name: 'Sobre', href: '#por-que-dulopes' },
     { name: 'FAQ', href: '#faq' },
     { name: 'Contato', href: '#contato' }

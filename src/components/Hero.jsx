@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, MessageCircle, ShieldCheck, MapPin, Mail } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import DulopesLogo from './DulopesLogo';
+import FoldText from './FoldText';
 
 export default function Hero() {
   const handleWhatsAppClick = () => {
@@ -50,24 +51,30 @@ export default function Hero() {
               <DulopesLogo variant="dark" size="xlarge" showSubtitle={true} />
             </div>
 
-            {/* Main Impact Statement - Dark Navy Metallic Typography */}
+            {/* Main Impact Statement - FoldText Animated Typography */}
             <h1 style={{
               color: '#0B2545',
-              fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
+              fontSize: 'clamp(2rem, 5vw, 3.75rem)',
               fontWeight: '900',
               lineHeight: '1.15',
               letterSpacing: '-0.025em',
               marginBottom: '1.5rem',
               textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)'
             }}>
-              Precisão e produtividade que chega em <span style={{
-                color: 'var(--orange-main)',
-                position: 'relative',
-                display: 'inline-block',
-                textShadow: '0 2px 8px rgba(255, 107, 0, 0.25)'
-              }}>
-                todo Brasil
-              </span>
+              <FoldText
+                text="Precisão e produtividade que chega em todo Brasil"
+                splitBy="word"
+                hinge="top"
+                trigger="mount"
+                duration={0.65}
+                stagger={0.045}
+                ease="power3.out"
+                perspective={700}
+                creaseShading={0.55}
+                fontSize="inherit"
+                fontWeight={900}
+                color="#0B2545"
+              />
             </h1>
 
             {/* Subtitle */}

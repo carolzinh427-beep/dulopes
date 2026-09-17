@@ -97,9 +97,20 @@ export default function Header() {
           height: isScrolled ? '68px' : '76px',
           transition: 'height 0.3s ease'
         }}>
-          {/* Dulopes Logo above hero - White letters with black shadow */}
+          {/* Wide Horizontal Rectangle Logo above hero */}
           <a href="#inicio" style={{ display: 'inline-flex', alignItems: 'center' }}>
-            <DulopesLogo variant="light" size="medium" showSubtitle={true} />
+            <img
+              src="/images/dulopes_logo_rectangle.jpg"
+              alt="Dulopes Máquinas e Equipamentos"
+              style={{
+                height: '44px',
+                width: 'auto',
+                borderRadius: '6px',
+                border: '1px solid rgba(255,255,255,0.25)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
+                transition: 'transform 0.2s ease'
+              }}
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -178,7 +189,16 @@ export default function Header() {
         }}>
           {/* Drawer Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <DulopesLogo variant="light" size="small" showSubtitle={true} />
+            <img
+              src="/images/dulopes_logo_rectangle.jpg"
+              alt="Dulopes Máquinas e Equipamentos"
+              style={{
+                height: '36px',
+                width: 'auto',
+                borderRadius: '5px',
+                border: '1px solid rgba(255,255,255,0.2)'
+              }}
+            />
             <button
               onClick={closeMenu}
               style={{

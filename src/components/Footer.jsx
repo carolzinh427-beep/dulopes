@@ -32,7 +32,17 @@ export default function Footer() {
           {/* Column 1: Brand & Description */}
           <div>
             <div style={{ marginBottom: '1.25rem' }}>
-              <DulopesLogo variant="light" size="small" showSubtitle={true} />
+              <img
+                src="/images/dulopes_logo_rectangle.jpg"
+                alt="Dulopes Máquinas e Equipamentos"
+                style={{
+                  height: '38px',
+                  width: 'auto',
+                  borderRadius: '5px',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                }}
+              />
             </div>
 
             <p style={{ fontSize: '0.875rem', lineHeight: '1.6', color: '#94A3B8', marginBottom: '1.25rem' }}>

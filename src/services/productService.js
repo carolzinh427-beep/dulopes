@@ -59,6 +59,41 @@ function formatProduct(docSnapshot) {
 }
 
 /**
+ * Format local initial product definition
+ */
+function formatInitialProduct(p) {
+  const imgs = p.imagens || p.images || [];
+  const mainImg = imgs.length > 0 ? imgs[0] : '/images/hero_equipment.jpg';
+  const status = p.status === 'inactive' || p.active === false ? 'inactive' : 'active';
+
+  return {
+    id: p.id,
+    name: p.nome || p.name || '',
+    nome: p.nome || p.name || '',
+    description: p.descricao || p.description || '',
+    descricao: p.descricao || p.description || '',
+    fullDescription: p.descricaoCompleta || p.fullDescription || p.descricao || p.description || '',
+    descricaoCompleta: p.descricaoCompleta || p.fullDescription || p.descricao || p.description || '',
+    category: p.categoria || p.category || 'maquinas',
+    categoria: p.categoria || p.category || 'maquinas',
+    price: p.preco !== undefined ? p.preco : p.price,
+    preco: p.preco !== undefined ? p.preco : p.price,
+    status,
+    mainImage: mainImg,
+    images: imgs.length > 0 ? imgs : [mainImg],
+    imagens: imgs.length > 0 ? imgs : [mainImg],
+    active: status === 'active',
+    ativo: status === 'active',
+    highlight: Boolean(p.destaque || p.highlight),
+    destaque: Boolean(p.destaque || p.highlight),
+    specifications: p.especificacoes || p.specifications || {},
+    especificacoes: p.especificacoes || p.specifications || {},
+    order: p.ordem || p.order || 1,
+    ordem: p.ordem || p.order || 1
+  };
+}
+
+/**
  * Ensures initial advertised products exist in Firestore 'products'
  */
 let seedPromise = null;
@@ -130,21 +165,10 @@ export async function ensureInitialProductsSeeded() {
  */
 export function subscribePublicProducts(callback) {
   if (!isFirebaseConfigured) {
-    callback(initialProducts.map(p => ({
-      ...p,
-      name: p.nome,
-      description: p.descricao,
-      category: p.categoria,
-      price: p.preco,
-      mainImage: p.imagens[0],
-      images: p.imagens,
-      status: 'active',
-      active: true
-    })));
+    callback(initialProducts.map(formatInitialProduct));
     return () => {};
   }
 
-  // Trigger seed check in background if needed
   ensureInitialProductsSeeded();
 
   try {
@@ -155,7 +179,7 @@ export function subscribePublicProducts(callback) {
 
     return onSnapshot(q, (snapshot) => {
       if (snapshot.empty) {
-        callback([]);
+        callback(initialProducts.map(formatInitialProduct));
       } else {
         const productList = snapshot.docs.map(formatProduct);
         productList.sort((a, b) => (a.order || 99) - (b.order || 99));
@@ -163,21 +187,11 @@ export function subscribePublicProducts(callback) {
       }
     }, (error) => {
       console.warn("Firestore public listener fallback:", error);
-      callback(initialProducts.map(p => ({
-        ...p,
-        name: p.nome,
-        description: p.descricao,
-        category: p.categoria,
-        price: p.preco,
-        mainImage: p.imagens[0],
-        images: p.imagens,
-        status: 'active',
-        active: true
-      })));
+      callback(initialProducts.map(formatInitialProduct));
     });
   } catch (err) {
     console.warn("Firestore public error:", err);
-    callback(initialProducts);
+    callback(initialProducts.map(formatInitialProduct));
     return () => {};
   }
 }
@@ -187,36 +201,29 @@ export function subscribePublicProducts(callback) {
  */
 export function subscribeAllProductsAdmin(callback) {
   if (!isFirebaseConfigured) {
-    callback(initialProducts.map(p => ({
-      ...p,
-      name: p.nome,
-      description: p.descricao,
-      category: p.categoria,
-      price: p.preco,
-      mainImage: p.imagens[0],
-      images: p.imagens,
-      status: 'active',
-      active: true
-    })));
+    callback(initialProducts.map(formatInitialProduct));
     return () => {};
   }
 
-  // Trigger seed check in background if needed
   ensureInitialProductsSeeded();
 
   try {
     const colRef = collection(db, COLLECTION_NAME);
     return onSnapshot(colRef, (snapshot) => {
-      const productList = snapshot.docs.map(formatProduct);
-      productList.sort((a, b) => (a.order || 99) - (b.order || 99));
-      callback(productList);
+      if (snapshot.empty) {
+        callback(initialProducts.map(formatInitialProduct));
+      } else {
+        const productList = snapshot.docs.map(formatProduct);
+        productList.sort((a, b) => (a.order || 99) - (b.order || 99));
+        callback(productList);
+      }
     }, (error) => {
       console.error("Admin Firestore listener error:", error);
-      callback(initialProducts);
+      callback(initialProducts.map(formatInitialProduct));
     });
   } catch (err) {
     console.error("Admin Firestore error:", err);
-    callback(initialProducts);
+    callback(initialProducts.map(formatInitialProduct));
     return () => {};
   }
 }

@@ -164,19 +164,26 @@ export default function AdminDashboard({ onGoHome, onLogout }) {
     setTimeout(() => setFeedback({ type: '', message: '' }), 4000);
   };
 
-  const totalAtivos = products.filter(p => p.status === 'active' && p.active !== false).length;
-  const totalInativos = products.filter(p => p.status === 'inactive' || p.active === false).length;
+  const totalAtivos = products.filter(p => p && (p.status === 'active' || p.active === true || p.ativo === true)).length;
+  const totalInativos = products.filter(p => p && (p.status === 'inactive' || p.active === false || p.ativo === false)).length;
 
   const filteredProducts = products.filter(p => {
-    const isActive = p.status === 'active' && p.active !== false;
+    if (!p) return false;
+
+    const isActive = p.status === 'active' || p.active === true || p.ativo === true;
     const matchesFilter =
       tableFilter === 'todos' ||
       (tableFilter === 'ativos' && isActive) ||
       (tableFilter === 'inativos' && !isActive);
 
-    const matchesSearch =
-      (p.name && p.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (p.category && p.category.toLowerCase().includes(searchQuery.toLowerCase()));
+    const q = (searchQuery || '').trim().toLowerCase();
+    if (!q) return matchesFilter;
+
+    const nameStr = String(p.name || p.nome || '').toLowerCase();
+    const catStr = String(p.category || p.categoria || '').toLowerCase();
+    const descStr = String(p.description || p.descricao || '').toLowerCase();
+
+    const matchesSearch = nameStr.includes(q) || catStr.includes(q) || descStr.includes(q);
 
     return matchesFilter && matchesSearch;
   });

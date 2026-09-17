@@ -11,32 +11,24 @@ export default function Hero() {
 
   return (
     <section id="inicio" style={{
-      backgroundColor: 'var(--navy-dark)',
+      backgroundImage: 'url(/images/brushed_steel_bg.jpg)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
       position: 'relative',
       overflow: 'hidden',
-      paddingTop: '3.5rem',
-      paddingBottom: '5rem',
-      borderBottom: '3px solid var(--orange-main)'
+      paddingTop: '4rem',
+      paddingBottom: '5.5rem',
+      borderBottom: '4px solid var(--orange-main)',
+      boxShadow: 'inset 0 0 100px rgba(0, 0, 0, 0.25)'
     }}>
-      {/* Background radial glowing accents */}
+      {/* Subtle brushed metal sheen gradient overlays */}
       <div style={{
         position: 'absolute',
-        top: '-10%',
-        right: '10%',
-        width: '550px',
-        height: '550px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(255,107,0,0.15) 0%, rgba(10,25,47,0) 70%)',
-        pointerEvents: 'none'
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: '0',
-        left: '0',
+        top: 0,
+        left: 0,
         width: '100%',
         height: '100%',
-        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px)',
-        backgroundSize: '40px 40px',
+        background: 'linear-gradient(180deg, rgba(240, 243, 246, 0.45) 0%, rgba(220, 226, 233, 0.65) 100%)',
         pointerEvents: 'none'
       }} />
 
@@ -48,27 +40,37 @@ export default function Hero() {
           textAlign: 'center'
         }}>
 
-          {/* Clean Hero Layout centered around Official Static Logo & Impact Statement */}
-          <div style={{ color: 'var(--white)', maxWidth: '820px', width: '100%' }}>
+          <div style={{ maxWidth: '840px', width: '100%' }}>
 
-            {/* Official Logo (Static, No Rotation Effect) */}
-            <div style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'center' }}>
-              <DulopesLogo variant="light" size="large" showSubtitle={true} />
+            {/* Logo on Brushed Metal Background - Exactly as photo */}
+            <div style={{
+              marginBottom: '2.5rem',
+              display: 'inline-block',
+              padding: '1.5rem 2.5rem',
+              borderRadius: 'var(--border-radius-lg)',
+              backgroundColor: 'rgba(255, 255, 255, 0.4)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.6)',
+              boxShadow: '0 12px 30px rgba(11, 37, 69, 0.15)'
+            }}>
+              <DulopesLogo variant="dark" size="xlarge" showSubtitle={true} has3DEffect={true} />
             </div>
 
-            {/* Main Title - Without Quotes, Without Period */}
+            {/* Main Impact Statement - Dark Navy Metallic Typography */}
             <h1 style={{
-              color: 'var(--white)',
+              color: '#0B2545',
               fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
               fontWeight: '900',
               lineHeight: '1.15',
-              letterSpacing: '-0.02em',
-              marginBottom: '1.5rem'
+              letterSpacing: '-0.025em',
+              marginBottom: '1.5rem',
+              textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)'
             }}>
               Precisão e produtividade que chega em <span style={{
                 color: 'var(--orange-main)',
                 position: 'relative',
-                display: 'inline-block'
+                display: 'inline-block',
+                textShadow: '0 2px 8px rgba(255, 107, 0, 0.25)'
               }}>
                 todo Brasil
               </span>
@@ -76,12 +78,14 @@ export default function Hero() {
 
             {/* Subtitle */}
             <p style={{
-              color: '#CBD5E1',
+              color: '#1E293B',
               fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
+              fontWeight: '600',
               lineHeight: '1.6',
               marginBottom: '2.5rem',
-              maxWidth: '680px',
-              margin: '0 auto 2.5rem auto'
+              maxWidth: '700px',
+              margin: '0 auto 2.5rem auto',
+              textShadow: '0 1px 1px rgba(255, 255, 255, 0.6)'
             }}>
               Máquinas e equipamentos desenvolvidos para empresas que buscam mais eficiência, qualidade e produtividade
             </p>
@@ -95,12 +99,12 @@ export default function Hero() {
               justifyContent: 'center',
               marginBottom: '3rem'
             }}>
-              <a href="#catalogo" className="btn btn-orange" style={{ padding: '1.05rem 2rem', fontSize: '1.05rem' }}>
+              <a href="#catalogo" className="btn btn-orange" style={{ padding: '1.05rem 2.2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px rgba(255, 107, 0, 0.35)' }}>
                 <span>Ver máquinas</span>
                 <ArrowRight size={20} />
               </a>
 
-              <button onClick={handleWhatsAppClick} className="btn btn-outline-white" style={{ padding: '1.05rem 1.8rem', fontSize: '1.05rem' }}>
+              <button onClick={handleWhatsAppClick} className="btn btn-navy" style={{ padding: '1.05rem 2rem', fontSize: '1.05rem', boxShadow: '0 10px 25px rgba(11, 37, 69, 0.25)' }}>
                 <MessageCircle size={20} color="var(--whatsapp-green)" />
                 <span>Falar com um especialista</span>
               </button>
@@ -114,9 +118,10 @@ export default function Hero() {
               gap: '2rem',
               flexWrap: 'wrap',
               paddingTop: '1.75rem',
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-              color: '#94A3B8',
-              fontSize: '0.9rem'
+              borderTop: '1px solid rgba(11, 37, 69, 0.15)',
+              color: '#334155',
+              fontSize: '0.925rem',
+              fontWeight: '700'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <ShieldCheck size={18} color="var(--orange-main)" />
@@ -128,7 +133,7 @@ export default function Hero() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Mail size={18} color="var(--orange-main)" />
-                <a href={`mailto:${companyConfig.email}`} style={{ color: '#E2E8F0', textDecoration: 'none' }}>
+                <a href={`mailto:${companyConfig.email}`} style={{ color: '#0B2545', textDecoration: 'none', fontWeight: '800' }}>
                   {companyConfig.email}
                 </a>
               </div>

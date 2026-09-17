@@ -29,12 +29,6 @@ export default function FinalCTA() {
       }} />
 
       <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '800px' }}>
-        {/* Support Tag */}
-        <div className="section-tag section-tag-dark" style={{ margin: '0 auto 1.25rem auto' }}>
-          <ShieldCheck size={14} color="var(--orange-main)" />
-          <span>ATENDIMENTO COMERCIAL DIRETO</span>
-        </div>
-
         {/* Main Title */}
         <h2 style={{
           fontSize: 'clamp(1.85rem, 4vw, 2.75rem)',

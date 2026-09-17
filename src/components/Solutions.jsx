@@ -20,10 +20,6 @@ export default function Solutions() {
       <div className="container">
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <div className="section-tag" style={{ margin: '0 auto 0.85rem auto' }}>
-            <Layers size={14} />
-            <span>EXCELÊNCIA OPERACIONAL</span>
-          </div>
           <h2 className="section-title">Soluções para sua operação</h2>
           <p className="section-subtitle" style={{ margin: '0 auto' }}>
             A Dulopes vai além da venda de máquinas, entregando equipamentos em inox estruturados para impulsionar o seu negócio.

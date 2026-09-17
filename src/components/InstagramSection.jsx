@@ -12,10 +12,6 @@ export default function InstagramSection() {
       <div className="container">
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <div className="section-tag" style={{ margin: '0 auto 0.85rem auto' }}>
-            <Instagram size={14} />
-            <span>REDES SOCIAIS</span>
-          </div>
           <h2 className="section-title">
             Veja nossos equipamentos na prática
           </h2>

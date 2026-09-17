@@ -44,10 +44,6 @@ export default function Catalog({ onOpenModal }) {
       <div className="container">
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div className="section-tag" style={{ margin: '0 auto 0.85rem auto' }}>
-            <Package size={14} />
-            <span>CATÁLOGO INDUSTRIAL</span>
-          </div>
           <h2 className="section-title">Máquinas e equipamentos</h2>
           <p className="section-subtitle" style={{ margin: '0 auto' }}>
             Encontre o equipamento ideal para a sua operação.

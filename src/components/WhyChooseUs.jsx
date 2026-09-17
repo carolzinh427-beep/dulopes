@@ -14,10 +14,6 @@ export default function WhyChooseUs() {
       <div className="container">
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <div className="section-tag" style={{ margin: '0 auto 0.85rem auto' }}>
-            <Award size={14} />
-            <span>DIFERENCIAIS DULOPES</span>
-          </div>
           <h2 className="section-title">
             Equipamento certo para uma operação mais eficiente
           </h2>

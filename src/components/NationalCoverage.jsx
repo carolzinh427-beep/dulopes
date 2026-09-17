@@ -36,11 +36,6 @@ export default function NationalCoverage() {
 
           {/* Left Side: Messaging & Address */}
           <div>
-            <div className="section-tag section-tag-dark" style={{ marginBottom: '1.25rem' }}>
-              <Globe size={14} color="var(--orange-main)" />
-              <span>COBERTURA NACIONAL</span>
-            </div>
-
             <h2 className="section-title" style={{ color: 'var(--white)', marginBottom: '1.25rem' }}>
               ATENDEMOS TODO O BRASIL
             </h2>

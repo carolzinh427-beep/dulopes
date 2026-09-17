@@ -18,10 +18,6 @@ export default function FAQ() {
       <div className="container" style={{ maxWidth: '720px' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div className="section-tag" style={{ margin: '0 auto 0.6rem auto' }}>
-            <HelpCircle size={14} />
-            <span>TIRA-DÚVIDAS</span>
-          </div>
           <h2 className="section-title" style={{ fontSize: '1.75rem' }}>Perguntas frequentes</h2>
           <p className="section-subtitle" style={{ margin: '0 auto', fontSize: '0.9rem' }}>
             Clique em cada pergunta para expandir e ver a resposta detalhada.

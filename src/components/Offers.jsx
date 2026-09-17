@@ -4,6 +4,7 @@ import { companyConfig } from '../data/companyData';
 import { subscribePublicProducts } from '../services/productService';
 import AnimatedContent from './AnimatedContent';
 import GlareHover from './GlareHover';
+import SplitText from './SplitText';
 
 export default function Offers() {
   const [newArrivals, setNewArrivals] = useState([]);
@@ -51,9 +52,16 @@ export default function Offers() {
           <h2 className="section-title" style={{ color: 'var(--white)', fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)' }}>
             Novidade na Dulopes
           </h2>
-          <p className="section-subtitle" style={{ color: '#CBD5E1', margin: '0 auto', fontSize: 'clamp(0.85rem, 2vw, 1rem)' }}>
-            Confira equipamentos em destaque e consulte condições especiais para equipar sua linha de produção.
-          </p>
+          <SplitText
+            tag="p"
+            className="section-subtitle"
+            text="Confira equipamentos em destaque e consulte condições especiais para equipar sua linha de produção."
+            splitType="words"
+            delay={35}
+            duration={0.7}
+            textAlign="center"
+            style={{ color: '#CBD5E1', margin: '0 auto', fontSize: 'clamp(0.85rem, 2vw, 1rem)' }}
+          />
         </div>
 
         {/* Product Cards Grid - Prominent & Tall Vertical Format */}

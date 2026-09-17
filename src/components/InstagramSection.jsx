@@ -1,6 +1,7 @@
 import React from 'react';
 import { Instagram, ExternalLink } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
+import SplitText from './SplitText';
 
 export default function InstagramSection() {
   return (
@@ -14,9 +15,16 @@ export default function InstagramSection() {
         <h2 className="section-title" style={{ fontSize: 'clamp(1.35rem, 3vw, 1.85rem)', marginBottom: '0.5rem' }}>
           Veja nossos equipamentos na prática
         </h2>
-        <p className="section-subtitle" style={{ margin: '0 auto 1.5rem auto', fontSize: '0.9rem' }}>
-          Acompanhe no Instagram demonstrações de máquinas em operação, entregas e novidades da Dulopes.
-        </p>
+        <SplitText
+          tag="p"
+          className="section-subtitle"
+          text="Acompanhe no Instagram demonstrações de máquinas em operação, entregas e novidades da Dulopes."
+          splitType="words"
+          delay={35}
+          duration={0.7}
+          textAlign="center"
+          style={{ margin: '0 auto 1.5rem auto', fontSize: '0.9rem' }}
+        />
 
         {/* Direct Link Button (No images) */}
         <div>

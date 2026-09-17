@@ -4,6 +4,7 @@ import { companyConfig } from '../data/companyData';
 import DulopesLogo from './DulopesLogo';
 import FoldText from './FoldText';
 import SpecularButton from './SpecularButton';
+import SplitText from './SplitText';
 
 export default function Hero() {
   const handleWhatsAppClick = () => {
@@ -78,19 +79,25 @@ export default function Hero() {
               />
             </h1>
 
-            {/* Subtitle */}
-            <p style={{
-              color: '#1E293B',
-              fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
-              fontWeight: '600',
-              lineHeight: '1.6',
-              marginBottom: '2.5rem',
-              maxWidth: '700px',
-              margin: '0 auto 2.5rem auto',
-              textShadow: '0 1px 1px rgba(255, 255, 255, 0.6)'
-            }}>
-              Máquinas e equipamentos desenvolvidos para empresas que buscam mais eficiência, qualidade e produtividade
-            </p>
+            {/* Subtitle with SplitText animation */}
+            <SplitText
+              tag="p"
+              text="Máquinas e equipamentos desenvolvidos para empresas que buscam mais eficiência, qualidade e produtividade"
+              splitType="words"
+              delay={30}
+              duration={0.7}
+              textAlign="center"
+              style={{
+                color: '#1E293B',
+                fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
+                fontWeight: '600',
+                lineHeight: '1.6',
+                marginBottom: '2.5rem',
+                maxWidth: '700px',
+                margin: '0 auto 2.5rem auto',
+                textShadow: '0 1px 1px rgba(255, 255, 255, 0.6)'
+              }}
+            />
 
             {/* Specular Action Buttons */}
             <div style={{

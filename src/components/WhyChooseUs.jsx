@@ -2,6 +2,7 @@ import React from 'react';
 import { Award, CheckCircle2, Shield, Target, Zap, Headphones, Globe } from 'lucide-react';
 import { whyUsBenefits } from '../data/companyData';
 import AnimatedContent from './AnimatedContent';
+import SplitText from './SplitText';
 
 export default function WhyChooseUs() {
   const benefitIcons = [Target, Zap, Shield, Award, Headphones, Globe];
@@ -18,9 +19,16 @@ export default function WhyChooseUs() {
           <h2 className="section-title">
             Equipamento certo para uma operação mais eficiente
           </h2>
-          <p className="section-subtitle" style={{ margin: '0 auto' }}>
-            Entenda como a Dulopes entrega valor constante para a rotina industrial e comercial do seu negócio.
-          </p>
+          <SplitText
+            tag="p"
+            className="section-subtitle"
+            text="Entenda como a Dulopes entrega valor constante para a rotina industrial e comercial do seu negócio."
+            splitType="words"
+            delay={35}
+            duration={0.7}
+            textAlign="center"
+            style={{ margin: '0 auto' }}
+          />
         </div>
 
         {/* Benefits Grid */}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin, Globe, Truck, Phone, Navigation } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
+import SplitText from './SplitText';
 
 export default function NationalCoverage() {
   return (
@@ -40,15 +41,21 @@ export default function NationalCoverage() {
               ATENDEMOS TODO O BRASIL
             </h2>
 
-            <p style={{
-              fontSize: '1.1rem',
-              color: '#CBD5E1',
-              lineHeight: '1.6',
-              marginBottom: '2rem',
-              maxWidth: '560px'
-            }}>
-              Da nossa operação em Cariacica, no Espírito Santo, levamos soluções e equipamentos para empresas em diferentes regiões do país.
-            </p>
+            <SplitText
+              tag="p"
+              text="Da nossa operação em Cariacica, no Espírito Santo, levamos soluções e equipamentos para empresas em diferentes regiões do país."
+              splitType="words"
+              delay={35}
+              duration={0.7}
+              textAlign="left"
+              style={{
+                fontSize: '1.1rem',
+                color: '#CBD5E1',
+                lineHeight: '1.6',
+                marginBottom: '2rem',
+                maxWidth: '560px'
+              }}
+            />
 
             {/* Address & Contact Card */}
             <div style={{

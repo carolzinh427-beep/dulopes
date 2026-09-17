@@ -3,6 +3,7 @@ import { Search, SlidersHorizontal, Package } from 'lucide-react';
 import { categories } from '../data/companyData';
 import { subscribePublicProducts } from '../services/productService';
 import ProductCard from './ProductCard';
+import SplitText from './SplitText';
 
 export default function Catalog({ onOpenModal }) {
   const [productList, setProductList] = useState([]);
@@ -45,9 +46,16 @@ export default function Catalog({ onOpenModal }) {
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <h2 className="section-title">Máquinas e equipamentos</h2>
-          <p className="section-subtitle" style={{ margin: '0 auto' }}>
-            Encontre o equipamento ideal para a sua operação.
-          </p>
+          <SplitText
+            tag="p"
+            className="section-subtitle"
+            text="Encontre o equipamento ideal para a sua operação."
+            splitType="words"
+            delay={35}
+            duration={0.7}
+            textAlign="center"
+            style={{ margin: '0 auto' }}
+          />
         </div>
 
         {/* Search & Category Filter Controls */}

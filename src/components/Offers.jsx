@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
 import { subscribePublicProducts } from '../services/productService';
+import AnimatedContent from './AnimatedContent';
 
 export default function Offers() {
   const [newArrivals, setNewArrivals] = useState([]);
@@ -61,52 +62,65 @@ export default function Offers() {
           gap: '1.5rem',
           justifyContent: 'center'
         }} className="offers-grid">
-          {newArrivals.map((item) => (
-            <div
+          {newArrivals.map((item, idx) => (
+            <AnimatedContent
               key={item.id}
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: 'var(--border-radius-md)',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                transition: 'transform 0.25s ease, border-color 0.25s ease',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
-              }}
-              className="offer-card"
+              distance={40}
+              direction="vertical"
+              duration={0.6}
+              ease="power3.out"
+              initialOpacity={0}
+              animateOpacity
+              scale={0.97}
+              threshold={0.15}
+              delay={idx * 0.1}
             >
-              {/* Image container - Larger vertical format */}
-              <div style={{ height: '240px', backgroundColor: '#0F172A', overflow: 'hidden', position: 'relative' }} className="offer-img-box">
-                <img
-                  src={item.mainImage || (item.images && item.images[0]) || '/images/envasadora_inox.jpg'}
-                  alt={item.name || item.nome}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
-
-              {/* Card Body */}
-              <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} className="offer-body">
-                <div>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--white)', margin: '0 0 0.5rem 0', lineHeight: '1.3' }} className="offer-title">
-                    {item.name || item.nome}
-                  </h3>
-                  <p style={{ fontSize: '0.875rem', color: '#94A3B8', marginBottom: '1.25rem', lineHeight: '1.5' }} className="offer-desc">
-                    {item.description || item.descricao}
-                  </p>
+              <div
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  borderRadius: 'var(--border-radius-md)',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  transition: 'transform 0.25s ease, border-color 0.25s ease',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                  height: '100%'
+                }}
+                className="offer-card"
+              >
+                {/* Image container - Larger vertical format */}
+                <div style={{ height: '240px', backgroundColor: '#0F172A', overflow: 'hidden', position: 'relative' }} className="offer-img-box">
+                  <img
+                    src={item.mainImage || (item.images && item.images[0]) || '/images/envasadora_inox.jpg'}
+                    alt={item.name || item.nome}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
                 </div>
 
-                <button
-                  onClick={() => handleWhatsAppOfferClick(item.name || item.nome)}
-                  className="btn btn-orange btn-full"
-                  style={{ padding: '0.75rem 1rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: '700' }}
-                >
-                  <MessageCircle size={18} />
-                  <span>Consultar no WhatsApp</span>
-                </button>
+                {/* Card Body */}
+                <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} className="offer-body">
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--white)', margin: '0 0 0.5rem 0', lineHeight: '1.3' }} className="offer-title">
+                      {item.name || item.nome}
+                    </h3>
+                    <p style={{ fontSize: '0.875rem', color: '#94A3B8', marginBottom: '1.25rem', lineHeight: '1.5' }} className="offer-desc">
+                      {item.description || item.descricao}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => handleWhatsAppOfferClick(item.name || item.nome)}
+                    className="btn btn-orange btn-full"
+                    style={{ padding: '0.75rem 1rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: '700' }}
+                  >
+                    <MessageCircle size={18} />
+                    <span>Consultar no WhatsApp</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            </AnimatedContent>
           ))}
         </div>
       </div>

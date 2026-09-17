@@ -1,6 +1,7 @@
 import React from 'react';
 import { Eye, MessageCircle, Shield, CheckCircle2 } from 'lucide-react';
 import { companyConfig } from '../data/companyData';
+import AnimatedContent from './AnimatedContent';
 
 export default function ProductCard({ product, onOpenModal }) {
   const handleWhatsAppInterest = (e) => {
@@ -12,9 +13,20 @@ export default function ProductCard({ product, onOpenModal }) {
   const isProntaEntrega = product.status === "Pronta Entrega";
 
   return (
-    <div
-      onClick={() => onOpenModal(product)}
-      className="card-hover-effect"
+    <AnimatedContent
+      distance={40}
+      direction="vertical"
+      duration={0.6}
+      ease="power3.out"
+      initialOpacity={0}
+      animateOpacity
+      scale={0.97}
+      threshold={0.15}
+      style={{ height: '100%' }}
+    >
+      <div
+        onClick={() => onOpenModal(product)}
+        className="card-hover-effect"
       style={{
         backgroundColor: 'var(--white)',
         borderRadius: 'var(--border-radius-md)',
@@ -168,5 +180,6 @@ export default function ProductCard({ product, onOpenModal }) {
         </div>
       </div>
     </div>
+    </AnimatedContent>
   );
 }

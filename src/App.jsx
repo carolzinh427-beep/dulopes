@@ -12,7 +12,6 @@ import WhyChooseUs from './components/WhyChooseUs';
 import NationalCoverage from './components/NationalCoverage';
 import InstagramSection from './components/InstagramSection';
 import FAQ from './components/FAQ';
-import FinalCTA from './components/FinalCTA';
 import Footer from './components/Footer';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import ProductModal from './components/ProductModal';
@@ -110,7 +109,6 @@ export default function App() {
         <NationalCoverage />
         <InstagramSection />
         <FAQ />
-        <FinalCTA />
       </main>
       <Footer />
       <WhatsAppFloat />

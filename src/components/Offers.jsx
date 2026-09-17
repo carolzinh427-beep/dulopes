@@ -26,7 +26,7 @@ export default function Offers() {
 
   return (
     <section id="ofertas" style={{
-      padding: '3rem 0',
+      padding: '3.5rem 0',
       backgroundColor: 'var(--navy-dark)',
       color: 'var(--white)',
       position: 'relative',
@@ -43,7 +43,7 @@ export default function Offers() {
         pointerEvents: 'none'
       }} />
 
-      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+      <div className="container" style={{ position: 'relative', zIndex: 2, maxWidth: '820px' }}>
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <h2 className="section-title" style={{ color: 'var(--white)', fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)' }}>
@@ -54,29 +54,31 @@ export default function Offers() {
           </p>
         </div>
 
-        {/* Product Cards Grid - Smaller Images & Compact Mobile View */}
+        {/* Product Cards Grid - Prominent & Tall Vertical Format */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '1.25rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '1.5rem',
+          justifyContent: 'center'
         }} className="offers-grid">
           {newArrivals.map((item) => (
             <div
               key={item.id}
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
                 borderRadius: 'var(--border-radius-md)',
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                transition: 'transform 0.2s ease, border-color 0.2s ease'
+                transition: 'transform 0.25s ease, border-color 0.25s ease',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)'
               }}
               className="offer-card"
             >
-              {/* Image container - Smaller image height */}
-              <div style={{ height: '120px', backgroundColor: '#0F172A', overflow: 'hidden' }} className="offer-img-box">
+              {/* Image container - Larger vertical format */}
+              <div style={{ height: '240px', backgroundColor: '#0F172A', overflow: 'hidden', position: 'relative' }} className="offer-img-box">
                 <img
                   src={item.mainImage || (item.images && item.images[0]) || '/images/envasadora_inox.jpg'}
                   alt={item.name || item.nome}
@@ -85,12 +87,12 @@ export default function Offers() {
               </div>
 
               {/* Card Body */}
-              <div style={{ padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} className="offer-body">
+              <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} className="offer-body">
                 <div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--white)', margin: '0 0 0.4rem 0', lineHeight: '1.3' }} className="offer-title">
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: '800', color: 'var(--white)', margin: '0 0 0.5rem 0', lineHeight: '1.3' }} className="offer-title">
                     {item.name || item.nome}
                   </h3>
-                  <p style={{ fontSize: '0.825rem', color: '#94A3B8', marginBottom: '1rem', lineHeight: '1.4' }} className="offer-desc">
+                  <p style={{ fontSize: '0.875rem', color: '#94A3B8', marginBottom: '1.25rem', lineHeight: '1.5' }} className="offer-desc">
                     {item.description || item.descricao}
                   </p>
                 </div>
@@ -98,9 +100,9 @@ export default function Offers() {
                 <button
                   onClick={() => handleWhatsAppOfferClick(item.name || item.nome)}
                   className="btn btn-orange btn-full"
-                  style={{ padding: '0.6rem 0.85rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                  style={{ padding: '0.75rem 1rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: '700' }}
                 >
-                  <MessageCircle size={16} />
+                  <MessageCircle size={18} />
                   <span>Consultar no WhatsApp</span>
                 </button>
               </div>
@@ -112,31 +114,25 @@ export default function Offers() {
       <style>{`
         @media (max-width: 640px) {
           #ofertas {
-            padding: 2rem 0 !important;
+            padding: 2.5rem 0 !important;
           }
           .offers-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 0.75rem !important;
+            grid-template-columns: 1fr !important;
+            gap: 1.25rem !important;
           }
           .offer-img-box {
-            height: 95px !important;
+            height: 200px !important;
           }
           .offer-body {
-            padding: 0.75rem !important;
+            padding: 1rem !important;
           }
           .offer-title {
-            font-size: 0.875rem !important;
+            font-size: 1rem !important;
           }
           .offer-desc {
-            font-size: 0.75rem !important;
-            margin-bottom: 0.75rem !important;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-          .btn-orange span {
-            font-size: 0.75rem !important;
+            font-size: 0.825rem !important;
+            margin-bottom: 1rem !important;
+            -webkit-line-clamp: 3 !important;
           }
         }
       `}</style>

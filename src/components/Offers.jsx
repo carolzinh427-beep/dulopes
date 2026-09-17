@@ -49,7 +49,7 @@ export default function Offers() {
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <h2 className="section-title" style={{ color: 'var(--white)', fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)' }}>
-            Acabaram de chegar
+            Novidade na Dulopes
           </h2>
           <p className="section-subtitle" style={{ color: '#CBD5E1', margin: '0 auto', fontSize: 'clamp(0.85rem, 2vw, 1rem)' }}>
             Confira equipamentos em destaque e consulte condições especiais para equipar sua linha de produção.

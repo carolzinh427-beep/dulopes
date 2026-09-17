@@ -97,20 +97,9 @@ export default function Header() {
           height: isScrolled ? '68px' : '76px',
           transition: 'height 0.3s ease'
         }}>
-          {/* Official Dulopes Logo - Dark Navy text on Orange Background Badge with 3D Depth */}
-          <a
-            href="#inicio"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '0.35rem 0.85rem',
-              borderRadius: 'var(--border-radius-md)',
-              backgroundColor: '#FF6B00',
-              boxShadow: '0 4px 14px rgba(255, 107, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25)',
-              transition: 'transform 0.2s ease'
-            }}
-          >
-            <DulopesLogo variant="dark" size="medium" showSubtitle={true} />
+          {/* Clean Transparent Dulopes Logo */}
+          <a href="#inicio" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <DulopesLogo variant="light" size="medium" showSubtitle={true} />
           </a>
 
           {/* Desktop Navigation */}
@@ -189,14 +178,7 @@ export default function Header() {
         }}>
           {/* Drawer Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <div style={{
-              padding: '0.3rem 0.75rem',
-              borderRadius: 'var(--border-radius-md)',
-              backgroundColor: '#FF6B00',
-              boxShadow: '0 4px 12px rgba(255, 107, 0, 0.4)'
-            }}>
-              <DulopesLogo variant="dark" size="small" showSubtitle={true} />
-            </div>
+            <DulopesLogo variant="light" size="small" showSubtitle={true} />
             <button
               onClick={closeMenu}
               style={{

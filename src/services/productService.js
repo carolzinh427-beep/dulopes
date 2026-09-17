@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   setDoc,
   addDoc,
@@ -58,6 +59,73 @@ function formatProduct(docSnapshot) {
 }
 
 /**
+ * Ensures initial advertised products exist in Firestore 'products'
+ */
+let seedPromise = null;
+export async function ensureInitialProductsSeeded() {
+  if (!isFirebaseConfigured) return;
+  if (seedPromise) return seedPromise;
+
+  seedPromise = (async () => {
+    try {
+      const metaDocRef = doc(db, 'meta', 'initial_seed');
+      const metaSnap = await getDoc(metaDocRef);
+
+      if (!metaSnap.exists()) {
+        const colRef = collection(db, COLLECTION_NAME);
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          console.log("Seeding initial advertised products to Firestore 'products'...");
+          for (const item of initialProducts) {
+            const docRef = doc(db, COLLECTION_NAME, item.id);
+            const mainImg = item.imagens && item.imagens.length > 0 ? item.imagens[0] : '/images/hero_equipment.jpg';
+
+            await setDoc(docRef, {
+              name: item.nome,
+              nome: item.nome,
+              description: item.descricao,
+              descricao: item.descricao,
+              fullDescription: item.descricaoCompleta || item.descricao,
+              descricaoCompleta: item.descricaoCompleta || item.descricao,
+              category: item.categoria,
+              categoria: item.categoria,
+              price: item.preco || null,
+              preco: item.preco || null,
+              status: 'active',
+              active: true,
+              ativo: true,
+              mainImage: mainImg,
+              images: item.imagens || [mainImg],
+              imagens: item.imagens || [mainImg],
+              highlight: Boolean(item.destaque),
+              destaque: Boolean(item.destaque),
+              specifications: item.especificacoes || {},
+              especificacoes: item.especificacoes || {},
+              order: item.ordem || 1,
+              ordem: item.ordem || 1,
+              createdAt: serverTimestamp(),
+              criadoEm: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+              atualizadoEm: serverTimestamp()
+            }, { merge: true });
+          }
+        }
+
+        await setDoc(metaDocRef, {
+          initialized: true,
+          initializedAt: serverTimestamp()
+        });
+      }
+    } catch (err) {
+      console.warn("Auto-seed initial products check notice:", err);
+    }
+  })();
+
+  return seedPromise;
+}
+
+/**
  * Subscribe to Public Site Products (ONLY status === 'active')
  */
 export function subscribePublicProducts(callback) {
@@ -76,6 +144,9 @@ export function subscribePublicProducts(callback) {
     return () => {};
   }
 
+  // Trigger seed check in background if needed
+  ensureInitialProductsSeeded();
+
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
@@ -84,17 +155,7 @@ export function subscribePublicProducts(callback) {
 
     return onSnapshot(q, (snapshot) => {
       if (snapshot.empty) {
-        callback(initialProducts.map(p => ({
-          ...p,
-          name: p.nome,
-          description: p.descricao,
-          category: p.categoria,
-          price: p.preco,
-          mainImage: p.imagens[0],
-          images: p.imagens,
-          status: 'active',
-          active: true
-        })));
+        callback([]);
       } else {
         const productList = snapshot.docs.map(formatProduct);
         productList.sort((a, b) => (a.order || 99) - (b.order || 99));
@@ -140,26 +201,15 @@ export function subscribeAllProductsAdmin(callback) {
     return () => {};
   }
 
+  // Trigger seed check in background if needed
+  ensureInitialProductsSeeded();
+
   try {
     const colRef = collection(db, COLLECTION_NAME);
     return onSnapshot(colRef, (snapshot) => {
-      if (snapshot.empty) {
-        callback(initialProducts.map(p => ({
-          ...p,
-          name: p.nome,
-          description: p.descricao,
-          category: p.categoria,
-          price: p.preco,
-          mainImage: p.imagens[0],
-          images: p.imagens,
-          status: 'active',
-          active: true
-        })));
-      } else {
-        const productList = snapshot.docs.map(formatProduct);
-        productList.sort((a, b) => (a.order || 99) - (b.order || 99));
-        callback(productList);
-      }
+      const productList = snapshot.docs.map(formatProduct);
+      productList.sort((a, b) => (a.order || 99) - (b.order || 99));
+      callback(productList);
     }, (error) => {
       console.error("Admin Firestore listener error:", error);
       callback(initialProducts);

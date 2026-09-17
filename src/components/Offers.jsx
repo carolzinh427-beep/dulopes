@@ -11,9 +11,9 @@ export default function Offers() {
     const unsubscribe = subscribePublicProducts((data) => {
       const highlighted = data.filter(p => p.highlight || p.destaque);
       if (highlighted.length > 0) {
-        setNewArrivals(highlighted.slice(0, 4));
+        setNewArrivals(highlighted.slice(0, 2));
       } else {
-        setNewArrivals(data.slice(0, 4));
+        setNewArrivals(data.slice(0, 2));
       }
     });
     return () => unsubscribe();

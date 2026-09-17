@@ -228,18 +228,6 @@ export const whyUsBenefits = [
   {
     titulo: "Qualidade Industrial",
     descricao: "Construção robusta em Aço Inox para máxima durabilidade, atendendo às normas de uso sanitário e fabril."
-  },
-  {
-    titulo: "Equipamentos Profissionais",
-    descricao: "Linha selecionada para atender às demandas reais das empresas com alto desempenho."
-  },
-  {
-    titulo: "Atendimento Especializado",
-    descricao: "Equipe preparada para entender sua necessidade real e indicar a máquina ideal para sua aplicação."
-  },
-  {
-    titulo: "Atendimento em todo Brasil",
-    descricao: "Operação sólida com envio estruturado para atender empresas em todas as regiões brasileiras."
   }
 ];
 
